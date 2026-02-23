@@ -3,12 +3,32 @@
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>pensieri e musica</title>
     <style>
         body {
-            margin: 0 20vw 0 20vw;
+            margin: 0;
             background: #fff;
             color: #000;
+        }
+
+        .content-wrapper {
+            margin: 0 20vw;
+            filter: url(#photocopy) contrast(1.2) brightness(1.05);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.06;
+            mix-blend-mode: multiply;
         }
 
         .box {
@@ -79,31 +99,23 @@
             font-variant: small-caps;
         }
 
-        .lang-switch {
+        .header {
             position: fixed;
-            top: 1em;
-            right: 1em;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8em 1em;
+            background: #fff;
             font-size: 14px;
             font-family: sans-serif;
+            line-height: 1.15;
             z-index: 100;
         }
 
-        .lang-switch a {
-            text-decoration: none;
-            color: #555;
-            cursor: pointer;
-        }
-
-        .lang-switch a.active {
-            color: #000;
-            text-decoration: underline;
-        }
-
-        .lang-switch span {
-            color: #555;
-            margin: 0 2px;
-        }
-        .site-title {
+        .site-title-desktop {
             position: fixed;
             top: 1em;
             left: 1em;
@@ -114,12 +126,91 @@
             z-index: 100;
         }
 
-        .indice {
+        .lang-switch-desktop {
+            position: fixed;
+            top: 1em;
+            right: 1em;
+            font-size: 14px;
+            font-family: sans-serif;
+            z-index: 100;
+        }
+
+        .lang-switch-desktop a {
+            text-decoration: none;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .lang-switch-desktop a.active {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .lang-switch-desktop span {
+            color: #555;
+            margin: 0 2px;
+        }
+
+        .indice-desktop {
             margin-top: 1.5em;
             margin-bottom: 1em;
             font-size: 14px;
             font-family: sans-serif;
             line-height: 1.15;
+        }
+
+        .indice-desktop a {
+            display: block;
+            color: #000;
+            text-decoration: none;
+            margin: 0.3em 0;
+        }
+
+        .indice-desktop a:hover {
+            text-decoration: underline;
+        }
+
+        .site-title {
+            color: #000;
+        }
+
+        .index-toggle {
+            cursor: pointer;
+            color: #000;
+        }
+
+        .indice {
+            display: none;
+            position: fixed;
+            top: 2.5em;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 0.8em 1em;
+            white-space: nowrap;
+            z-index: 99;
+        }
+
+        .indice.open {
+            display: block;
+        }
+
+        .lang-switch a {
+            text-decoration: none;
+            color: #555;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: sans-serif;
+        }
+
+        .lang-switch a.active {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .lang-switch span {
+            color: #555;
+            margin: 0 2px;
         }
 
         .indice a {
@@ -132,31 +223,140 @@
         .indice a:hover {
             text-decoration: underline;
         }
+
+        @media (max-width: 768px) {
+            body {
+                margin: 0;
+            }
+
+            .content-wrapper {
+                margin: 3.5em 1em 0 1em;
+            }
+
+            .box {
+                scroll-margin-top: 3.5em;
+            }
+
+            .box {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .header {
+                display: flex;
+            }
+
+            .site-title-desktop,
+            .lang-switch-desktop {
+                display: none;
+            }
+
+            .download-btn {
+                display: none;
+            }
+        }
+
+        .download-btn {
+            position: fixed;
+            bottom: 1em;
+            right: 1em;
+            font-size: 14px;
+            font-family: sans-serif;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: #000;
+            z-index: 100;
+        }
+
+        .download-btn:hover {
+            text-decoration: underline;
+        }
+
+        @media print {
+            @page {
+                margin: 1cm;
+            }
+
+            body {
+                margin: 0;
+            }
+
+            .content-wrapper {
+                margin: 0;
+                filter: none;
+            }
+
+            .site-title-desktop,
+            .lang-switch-desktop,
+            .header,
+            .download-btn,
+            .indice-desktop {
+                display: none !important;
+            }
+
+            body::after {
+                display: none;
+            }
+
+            .box {
+                border: 0.2px solid #000;
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+        }
     </style>
+
+    <svg style="position:absolute;width:0;height:0">
+        <filter id="photocopy">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise"/>
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+        </filter>
+    </svg>
 </head>
 
 <body>
 
-    <div class="site-title">Pensieri
-        <div class="indice">
+    <div class="site-title-desktop">Pensieri
+        <div class="indice-desktop">
             <a href="#volo">Il volo</a>
-        <a href="#temporale">Il temporale</a>
-        <a href="#noia">Noia, tristezza e tranquillità</a>
-        <a href="#rovine">Rovine</a>
-        <a href="#tesi">Tesi, capitolo ultimo</a>
-        <a href="#ingenuo">Pensiero ingenuo, l’inutile</a>
+            <a href="#temporale">Il temporale</a>
+            <a href="#noia">Noia, tristezza e tranquillità</a>
+            <a href="#rovine">Rovine</a>
+            <a href="#tesi">Tesi, capitolo ultimo</a>
+            <a href="#ingenuo">Pensiero ingenuo, l’inutile</a>
         </div>
     </div>
 
-    <div class="lang-switch">
+    <div class="lang-switch-desktop">
         <a class="active" onclick="switchLang('it', this)">it</a><span>—</span><a onclick="switchLang('en', this)">eng</a>
     </div>
+
+    <div class="header">
+        <div class="site-title">Pensieri</div>
+        <div class="index-toggle" onclick="document.querySelector('.indice').classList.toggle('open')">
+            index
+            <div class="indice">
+                <a href="#volo" onclick="this.closest('.indice').classList.remove('open')">Il volo</a>
+                <a href="#temporale" onclick="this.closest('.indice').classList.remove('open')">Il temporale</a>
+                <a href="#noia" onclick="this.closest('.indice').classList.remove('open')">Noia, tristezza e tranquillità</a>
+                <a href="#rovine" onclick="this.closest('.indice').classList.remove('open')">Rovine</a>
+                <a href="#tesi" onclick="this.closest('.indice').classList.remove('open')">Tesi, capitolo ultimo</a>
+                <a href="#ingenuo" onclick="this.closest('.indice').classList.remove('open')">Pensiero ingenuo, l'inutile</a>
+            </div>
+        </div>
+        <div class="lang-switch">
+            <a class="active" onclick="switchLang('it', this)">it</a><span>—</span><a onclick="switchLang('en', this)">eng</a>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
 
     <div class="box bianco" id="volo">
         <p class="title">Il volo</p>
         <p>Volavo su una vecchia catapecchia ferruginosa, nel corso degli anni aveva subito diverse riparazioni il mio aeroplano. Era tutto rattoppato di placche metalliche saldate alla buona, puntinato di viti nelle giunture. A me piaceva così come era, gli dava un’aria vissuta, un vero aeroplano dell’anteguerra. Molti lo definivano solamente un’accozzaglia metallica di ingranaggi, eppure finora mi aveva portato ovunque avessi voluto, librandosi maestoso nei cieli d’ogni colore, il rosaceo della mattina, l’arancio del tramonto, in quel colore carta da zucchero grignolino che precede i temporali quando si vedono le nubi in lontananza, nel cielo limpido dell’estate appena sbocciata in mille fiori e odori, nel grigio scuro dei temporali. Una volta attraversammo perfino una tempesta di fulmini il cui giallo fendeva le nuvole schierate e compatte nel cielo, sembrava quasi che cercando di bucarle per salire al di sopra di esse ci saremmo accartocciati, ma così non fu. Quella volta bucammo le nuvole e arrivammo al sole splendente, un azzurro zaffiro intensissimo sopra, e sotto, le nuvole, che da terra sembravano così grigie, erano invece delle grosse e morbide lenzuola bianche, spumeggianti come onde del mare in tempesta, come schiuma nella vasca da bagno. La lamiera dell’aereo splendeva al sole di un’innaturale bellezza, quasi che tutte quelle ammaccature, cuciture, rattoppi e quel colore rossastro della ruggine che sembrava disegnarne i dettagli non potessero che essere così suoi. Quella volta lì sopra le nuvole decisi che dovevo imparare a volare. Dentro di me sapevo già che sarei riuscito a volare, era come se conoscessi già la tecnica innata nella mia struttura cromosomiale. Sapevo già che per spiccare il volo avrei dovuto prendere la rincorsa oppure lanciarmi da un posto sopraelevato, molte volte avevo immaginato di lanciarmi dalle torri di Urbino e sorvolare le praterie e scivolare sul vento attraversando i colli verdissimi per raggiungere le cime innevate. Sapevo già che per volare avrei dovuto cogliere i flutti del vento, percepire le minime vibrazioni e le correnti ascensionali attraversare il mio corpo, sentire gli spiri del vento farmi drizzare i peli e allora capire che era il momento di allargare le braccia e aprire le mani per risalire la corrente. Questo l’avevo imparato osservando le correnti di vento fortissime che si formavano tra le calli di Urbino, oppure guardando il mare e potendo riconoscere qualche secondo in anticipo quando sarebbe arrivata la raffica, vedendo il mare incresparsi di piccole ondine, le gabbianelle. Avevo anche imparato a vedere il vento che mi portava su, mi appariva allo sguardo come una leggerissima seta bianca, così sottile da essere praticamente trasparente e da poterla vedere solamente quando si piegava nella giusta direzione rispetto alla luce. Così presi coraggio, potevo farcela, avevo già sognato di poter volare e nei miei sogni avevo già messo in pratica le mie teorie. Feci un passo in direzione dello sportello anteriore, lo spalancai e una folata di vento gelido di alta quota mi travolse, subito dopo arrivò il calore tiepido del sole, mi avvicinai e senza indugi mi gettai nel vuoto. Mi lasciai accarezzare dal vento che mi avvolgeva e senza chiedere niente mi cullava tra le sue grandi braccia invisibili, allargai sia gambe che braccia come fossero ali, e subito afferrai le redini del vento potendo controllarlo a seconda di quanto le chiudevo cercando di congiungerle o le allargavo cercando di abbracciare l’orizzonte. Se volevo girare a destra o sinistra mi bastava piegare il rispettivo braccio verso la terra, allora subito il mio corpo ruotava e virava dolcemente verso la giusta direzione. Certo mi serviva concentrazione per cogliere le sottili variazioni dei venti da cui è governato invisibilmente il nostro cielo, appena mi distraevo, perdevo infatti quota. È così che arrivai a sfiorare le nuvole che con la folle velocità che avevo acquisito si aprivano in un varco dietro al mio passaggio lasciando intravedere le enormi praterie che stavo sorvolando. Non potevo non avvicinarmi, volevo sentire l’odore fragrante che i fiori e l’erba rilasciano quando sono riscaldati dal sole, volevo sentire la terra rilasciare lentamente il suo tepore e la sua umidità, volevo sfrecciare e roteare e fare acrobazie tra le frasche scoprendo così tante sfumature di verde che neanche pensavo potessero esistere, e le foglie tutte diverse e l’odore muschioso sui tronchi degli alberi, attraversando boschi e poi improvvisamente ritrovandomi a perdita d’occhio su praterie immense tutte arate in direzioni diverse e ognuna con il proprio grado di marrone, giallo, di verde e di altri colori di fiori che sbucavano qui e lì come in una pittura puntinista mischiandosi in un amalgama di colori che mi sorprendeva sempre. Giungendo al suolo, sempre cogliendo le spire del vento, sfioravo specchi d’acqua e laghi e mari che zampillavano dietro al mio passaggio e nell’acqua trasparente potevo vedere i pesci che si avvicinavano alla superficie incuriositi dal mio passaggio, e le alghe verdi smeraldo muoversi come capelli in un movimento sinuoso. Poi risalivo di nuovo nel cielo. È in una di queste risalite che mi accorsi dall’alto di una vecchia casetta di campagna, ma non quel rustico certe volte volgare e decadente, aveva un che di fiabesco, di gioioso, era circondata da campi di alberi con ogni genere di frutto. Non potei non notare, nonostante ormai trasportato dalle correnti mi trovassi molto in alto, due figure umane, piccole come formiche, intente ad affaccendarsi alla raccolta di tanta bontà della natura; con le loro mani sagge, che conoscono i tempi della natura e sono intrise di una sapienza terrestre, sceglievano quale frutto era pronto e quale dovesse essere ancora lasciato a maturare. Incuriosito mi avvicinai e in un attimo di distrazione persi il controllo del mio volo. Finii, rotolando in una capriola, sotto una lunga fila di alberi di mele rosse. 
 Il vecchietto, uno dei due, che assomigliava a mio nonno, mi chiese con voce tranquilla come ci ero arrivato qui, e con una tiepida accoglienza, come quando al mattino assaggi la fetta di pane caldo il cui calore si irradia dalla bocca a tutto il corpo, mi invitò ad assaggiare alcuni dei frutti che aveva raccolto. Il luogo del ristoro era un traballante gazebo di legno, che, se non per miracolo, forse stava ancora in piedi tenuto da tutte le piante che gli erano cresciute attorcigliandosi intorno, creando una barriera naturale per il sole, che filtrava creando brillantini e punti luminescenti illuminando la scena e il tavolo traboccante di frutta. Non ricordo molto altro di quell’incontro, forse il sole è sceso lasciando il posto alla brezza fresca del crepuscolo, forse le prime stelle nel cielo sono comparse. Non ricordo il sapore della frutta, solamente un dolce invito a tornare ogni qual volta avessi sorvolato le loro praterie.
-
 </p>
     </div>
 
@@ -189,7 +389,6 @@ E una gigante nuvola
 Bianca e grigia.
 
 Ecco sono queste le nuvole che mi piacciono quelle grosse, enormi, bianche e grigie, con tuoni ovattati che le accompagnano e poi comincia un po’ di vento. Cade la pioggia e le foglie si girano, e il grigio e il verde sono bellissimi. Il grigio anche se è triste e noioso, fa risaltare gli altri colori. Il verde e il grigio del temporale mi mettono tranquillità. 
-
 </p>
     </div>
 
@@ -665,11 +864,23 @@ Chi riesce infatti ad esprimere e comunicare questo tipo di pensiero attua sicur
 </div>
     </div>
 
+    </div>
+
+    <button class="download-btn" onclick="window.print()">download as pdf</button>
+
     <script>
         function switchLang(lang, el) {
             document.querySelectorAll('.lang-switch a').forEach(a => a.classList.remove('active'));
             el.classList.add('active');
         }
+
+        document.addEventListener('click', function(e) {
+            var indice = document.querySelector('.indice');
+            var toggle = document.querySelector('.index-toggle');
+            if (!toggle.contains(e.target)) {
+                indice.classList.remove('open');
+            }
+        });
     </script>
 
 </body>
