@@ -3,9 +3,15 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
     <title>pensieri e musica</title>
     <style>
+        html {
+            background: #fff;
+            isolation: isolate;
+        }
+
         body {
             margin: 0;
             background: #fff;
@@ -108,11 +114,20 @@
             justify-content: space-between;
             align-items: center;
             padding: 0.8em 1em;
+            padding-top: max(0.8em, env(safe-area-inset-top));
             background: #fff;
             font-size: 14px;
             font-family: sans-serif;
             line-height: 1.15;
             z-index: 100;
+        }
+
+        .index-toggle {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            color: #000;
         }
 
         .site-title-desktop {
@@ -126,6 +141,24 @@
             z-index: 100;
         }
 
+        .nav-links {
+            display: inline;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .nav-links a.nav-active {
+            text-decoration: underline;
+        }
+
+        .nav-links span {
+            color: #555;
+            margin: 0 2px;
+        }
+
         .lang-switch-desktop {
             position: fixed;
             top: 1em;
@@ -133,6 +166,7 @@
             font-size: 14px;
             font-family: sans-serif;
             z-index: 100;
+            text-align: right;
         }
 
         .lang-switch-desktop a {
@@ -174,21 +208,20 @@
             color: #000;
         }
 
-        .index-toggle {
-            cursor: pointer;
-            color: #000;
-        }
-
         .indice {
             display: none;
             position: fixed;
-            top: 2.5em;
+            top: 0;
             left: 0;
             right: 0;
             background: #fff;
-            padding: 0.8em 1em;
+            padding: 3.5em 1em 1em 1em;
             white-space: nowrap;
             z-index: 99;
+            text-align: left;
+            font-family: sans-serif;
+            font-size: 14px;
+            line-height: 1.15;
         }
 
         .indice.open {
@@ -197,7 +230,7 @@
 
         .lang-switch a {
             text-decoration: none;
-            color: #555;
+            color: #000;
             cursor: pointer;
             font-size: 14px;
             font-family: sans-serif;
@@ -274,6 +307,55 @@
             text-decoration: underline;
         }
 
+        .lang-en {
+            display: none;
+        }
+
+        body.en .lang-en {
+            display: block;
+        }
+
+        body.en .lang-it {
+            display: none;
+        }
+
+        .translation-note {
+            display: none;
+            font-size: 11px;
+            font-family: sans-serif;
+            color: #000;
+            line-height: 1.3;
+            margin-top: 0.4em;
+            text-align: right;
+        }
+
+        body.en .translation-note {
+            display: block;
+        }
+
+        .lang-switch-desktop .translation-note {
+            max-width: calc(20vw - 2em);
+        }
+
+        .note-dropdown {
+            display: none;
+            position: fixed;
+            top: 2.5em;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 0.8em 1em;
+            z-index: 99;
+            font-size: 12px;
+            font-family: sans-serif;
+            color: #000;
+            line-height: 1.4;
+        }
+
+        .note-dropdown.open {
+            display: block;
+        }
+
         @media print {
             @page {
                 margin: 1cm;
@@ -318,7 +400,8 @@
 
 <body>
 
-    <div class="site-title-desktop">Pensieri
+    <div class="site-title-desktop">
+        <div class="nav-links"><a href="index.html" class="nav-active">Pensieri</a><span>–</span><a href="music.html">Musica</a></div>
         <div class="indice-desktop">
             <a href="#volo">Il volo</a>
             <a href="#temporale">Il temporale</a>
@@ -330,43 +413,61 @@
     </div>
 
     <div class="lang-switch-desktop">
-        <a class="active" onclick="switchLang('it', this)">it</a><span>—</span><a onclick="switchLang('en', this)">eng</a>
+        <a class="active" onclick="switchLang('it')">it</a><span>—</span><a onclick="switchLang('en')">eng</a>
+        <div class="translation-note">*original texts are written in Italian; the English version is an AI-made translation that tries to preserve as closely as possible my style, rhythm, vocabulary and tension.</div>
     </div>
 
     <div class="header">
-        <div class="site-title">Pensieri</div>
+        <div class="site-title"><div class="nav-links"><a href="index.html" class="nav-active">Pensieri</a><span>–</span><a href="music.html">Musica</a></div></div>
         <div class="index-toggle" onclick="document.querySelector('.indice').classList.toggle('open')">
             index
-            <div class="indice">
-                <a href="#volo" onclick="this.closest('.indice').classList.remove('open')">Il volo</a>
-                <a href="#temporale" onclick="this.closest('.indice').classList.remove('open')">Il temporale</a>
-                <a href="#noia" onclick="this.closest('.indice').classList.remove('open')">Noia, tristezza e tranquillità</a>
-                <a href="#rovine" onclick="this.closest('.indice').classList.remove('open')">Rovine</a>
-                <a href="#tesi" onclick="this.closest('.indice').classList.remove('open')">Tesi, capitolo ultimo</a>
-                <a href="#ingenuo" onclick="this.closest('.indice').classList.remove('open')">Pensiero ingenuo, l'inutile</a>
-            </div>
         </div>
         <div class="lang-switch">
-            <a class="active" onclick="switchLang('it', this)">it</a><span>—</span><a onclick="switchLang('en', this)">eng</a>
+            <a class="active" onclick="switchLang('it')">it</a><span>—</span><a onclick="switchLang('en')">eng*</a>
         </div>
+        <div class="note-dropdown">*original texts are written in Italian; the English version is an AI-made translation that tries to preserve as closely as possible my style, rhythm, vocabulary and tension.</div>
+    </div>
+    <div class="indice">
+        <a href="#volo" onclick="document.querySelector('.indice').classList.remove('open')">Il volo</a>
+        <a href="#temporale" onclick="document.querySelector('.indice').classList.remove('open')">Il temporale</a>
+        <a href="#noia" onclick="document.querySelector('.indice').classList.remove('open')">Noia, tristezza e tranquillità</a>
+        <a href="#rovine" onclick="document.querySelector('.indice').classList.remove('open')">Rovine</a>
+        <a href="#tesi" onclick="document.querySelector('.indice').classList.remove('open')">Tesi, capitolo ultimo</a>
+        <a href="#ingenuo" onclick="document.querySelector('.indice').classList.remove('open')">Pensiero ingenuo, l'inutile</a>
     </div>
 
     <div class="content-wrapper">
 
     <div class="box bianco" id="volo">
+        <div class="lang-it">
         <p class="title">Il volo</p>
-        <p>Volavo su una vecchia catapecchia ferruginosa, nel corso degli anni aveva subito diverse riparazioni il mio aeroplano. Era tutto rattoppato di placche metalliche saldate alla buona, puntinato di viti nelle giunture. A me piaceva così come era, gli dava un’aria vissuta, un vero aeroplano dell’anteguerra. Molti lo definivano solamente un’accozzaglia metallica di ingranaggi, eppure finora mi aveva portato ovunque avessi voluto, librandosi maestoso nei cieli d’ogni colore, il rosaceo della mattina, l’arancio del tramonto, in quel colore carta da zucchero grignolino che precede i temporali quando si vedono le nubi in lontananza, nel cielo limpido dell’estate appena sbocciata in mille fiori e odori, nel grigio scuro dei temporali. Una volta attraversammo perfino una tempesta di fulmini il cui giallo fendeva le nuvole schierate e compatte nel cielo, sembrava quasi che cercando di bucarle per salire al di sopra di esse ci saremmo accartocciati, ma così non fu. Quella volta bucammo le nuvole e arrivammo al sole splendente, un azzurro zaffiro intensissimo sopra, e sotto, le nuvole, che da terra sembravano così grigie, erano invece delle grosse e morbide lenzuola bianche, spumeggianti come onde del mare in tempesta, come schiuma nella vasca da bagno. La lamiera dell’aereo splendeva al sole di un’innaturale bellezza, quasi che tutte quelle ammaccature, cuciture, rattoppi e quel colore rossastro della ruggine che sembrava disegnarne i dettagli non potessero che essere così suoi. Quella volta lì sopra le nuvole decisi che dovevo imparare a volare. Dentro di me sapevo già che sarei riuscito a volare, era come se conoscessi già la tecnica innata nella mia struttura cromosomiale. Sapevo già che per spiccare il volo avrei dovuto prendere la rincorsa oppure lanciarmi da un posto sopraelevato, molte volte avevo immaginato di lanciarmi dalle torri di Urbino e sorvolare le praterie e scivolare sul vento attraversando i colli verdissimi per raggiungere le cime innevate. Sapevo già che per volare avrei dovuto cogliere i flutti del vento, percepire le minime vibrazioni e le correnti ascensionali attraversare il mio corpo, sentire gli spiri del vento farmi drizzare i peli e allora capire che era il momento di allargare le braccia e aprire le mani per risalire la corrente. Questo l’avevo imparato osservando le correnti di vento fortissime che si formavano tra le calli di Urbino, oppure guardando il mare e potendo riconoscere qualche secondo in anticipo quando sarebbe arrivata la raffica, vedendo il mare incresparsi di piccole ondine, le gabbianelle. Avevo anche imparato a vedere il vento che mi portava su, mi appariva allo sguardo come una leggerissima seta bianca, così sottile da essere praticamente trasparente e da poterla vedere solamente quando si piegava nella giusta direzione rispetto alla luce. Così presi coraggio, potevo farcela, avevo già sognato di poter volare e nei miei sogni avevo già messo in pratica le mie teorie. Feci un passo in direzione dello sportello anteriore, lo spalancai e una folata di vento gelido di alta quota mi travolse, subito dopo arrivò il calore tiepido del sole, mi avvicinai e senza indugi mi gettai nel vuoto. Mi lasciai accarezzare dal vento che mi avvolgeva e senza chiedere niente mi cullava tra le sue grandi braccia invisibili, allargai sia gambe che braccia come fossero ali, e subito afferrai le redini del vento potendo controllarlo a seconda di quanto le chiudevo cercando di congiungerle o le allargavo cercando di abbracciare l’orizzonte. Se volevo girare a destra o sinistra mi bastava piegare il rispettivo braccio verso la terra, allora subito il mio corpo ruotava e virava dolcemente verso la giusta direzione. Certo mi serviva concentrazione per cogliere le sottili variazioni dei venti da cui è governato invisibilmente il nostro cielo, appena mi distraevo, perdevo infatti quota. È così che arrivai a sfiorare le nuvole che con la folle velocità che avevo acquisito si aprivano in un varco dietro al mio passaggio lasciando intravedere le enormi praterie che stavo sorvolando. Non potevo non avvicinarmi, volevo sentire l’odore fragrante che i fiori e l’erba rilasciano quando sono riscaldati dal sole, volevo sentire la terra rilasciare lentamente il suo tepore e la sua umidità, volevo sfrecciare e roteare e fare acrobazie tra le frasche scoprendo così tante sfumature di verde che neanche pensavo potessero esistere, e le foglie tutte diverse e l’odore muschioso sui tronchi degli alberi, attraversando boschi e poi improvvisamente ritrovandomi a perdita d’occhio su praterie immense tutte arate in direzioni diverse e ognuna con il proprio grado di marrone, giallo, di verde e di altri colori di fiori che sbucavano qui e lì come in una pittura puntinista mischiandosi in un amalgama di colori che mi sorprendeva sempre. Giungendo al suolo, sempre cogliendo le spire del vento, sfioravo specchi d’acqua e laghi e mari che zampillavano dietro al mio passaggio e nell’acqua trasparente potevo vedere i pesci che si avvicinavano alla superficie incuriositi dal mio passaggio, e le alghe verdi smeraldo muoversi come capelli in un movimento sinuoso. Poi risalivo di nuovo nel cielo. È in una di queste risalite che mi accorsi dall’alto di una vecchia casetta di campagna, ma non quel rustico certe volte volgare e decadente, aveva un che di fiabesco, di gioioso, era circondata da campi di alberi con ogni genere di frutto. Non potei non notare, nonostante ormai trasportato dalle correnti mi trovassi molto in alto, due figure umane, piccole come formiche, intente ad affaccendarsi alla raccolta di tanta bontà della natura; con le loro mani sagge, che conoscono i tempi della natura e sono intrise di una sapienza terrestre, sceglievano quale frutto era pronto e quale dovesse essere ancora lasciato a maturare. Incuriosito mi avvicinai e in un attimo di distrazione persi il controllo del mio volo. Finii, rotolando in una capriola, sotto una lunga fila di alberi di mele rosse. 
+        <p>Volavo su una vecchia catapecchia ferruginosa, nel corso degli anni aveva subito diverse riparazioni il mio aeroplano. Era tutto rattoppato di placche metalliche saldate alla buona, puntinato di viti nelle giunture. A me piaceva così come era, gli dava un’aria vissuta, un vero aeroplano dell’anteguerra. Molti lo definivano solamente un’accozzaglia metallica di ingranaggi, eppure finora mi aveva portato ovunque avessi voluto, librandosi maestoso nei cieli d’ogni colore, il rosaceo della mattina, l’arancio del tramonto, in quel colore carta da zucchero grigiolino che precede i temporali quando si vedono le nubi in lontananza, nel cielo limpido dell’estate appena sbocciata in mille fiori e odori, nel grigio scuro dei temporali. Una volta attraversammo perfino una tempesta di fulmini il cui giallo fendeva le nuvole schierate e compatte nel cielo, sembrava quasi che cercando di bucarle per salire al di sopra di esse ci saremmo accartocciati, ma così non fu. Quella volta bucammo le nuvole e arrivammo al sole splendente, un azzurro zaffiro intensissimo sopra, e sotto, le nuvole, che da terra sembravano così grigie, erano invece delle grosse e morbide lenzuola bianche, spumeggianti come onde del mare in tempesta, come schiuma nella vasca da bagno. La lamiera dell’aereo splendeva al sole di un’innaturale bellezza, quasi che tutte quelle ammaccature, cuciture, rattoppi e quel colore rossastro della ruggine che sembrava disegnarne i dettagli non potessero che essere così suoi. Quella volta lì sopra le nuvole decisi che dovevo imparare a volare. Dentro di me sapevo già che sarei riuscito a volare, era come se conoscessi già la tecnica innata nella mia struttura cromosomiale. Sapevo già che per spiccare il volo avrei dovuto prendere la rincorsa oppure lanciarmi da un posto sopraelevato, molte volte avevo immaginato di lanciarmi dalle torri di Urbino e sorvolare le praterie e scivolare sul vento attraversando i colli verdissimi per raggiungere le cime innevate. Sapevo già che per volare avrei dovuto cogliere i flutti del vento, percepire le minime vibrazioni e le correnti ascensionali attraversare il mio corpo, sentire gli spiri del vento farmi drizzare i peli e allora capire che era il momento di allargare le braccia e aprire le mani per risalire la corrente. Questo l’avevo imparato osservando le correnti di vento fortissime che si formavano tra le calli di Urbino, oppure guardando il mare e potendo riconoscere qualche secondo in anticipo quando sarebbe arrivata la raffica, vedendo il mare incresparsi di piccole ondine, le gabbianelle. Avevo anche imparato a vedere il vento che mi portava su, mi appariva allo sguardo come una leggerissima seta bianca, così sottile da essere praticamente trasparente e da poterla vedere solamente quando si piegava nella giusta direzione rispetto alla luce. Così presi coraggio, potevo farcela, avevo già sognato di poter volare e nei miei sogni avevo già messo in pratica le mie teorie. Feci un passo in direzione dello sportello anteriore, lo spalancai e una folata di vento gelido di alta quota mi travolse, subito dopo arrivò il calore tiepido del sole, mi avvicinai e senza indugi mi gettai nel vuoto. Mi lasciai accarezzare dal vento che mi avvolgeva e senza chiedere niente mi cullava tra le sue grandi braccia invisibili, allargai sia gambe che braccia come fossero ali, e subito afferrai le redini del vento potendo controllarlo a seconda di quanto le chiudevo cercando di congiungerle o le allargavo cercando di abbracciare l’orizzonte. Se volevo girare a destra o sinistra mi bastava piegare il rispettivo braccio verso la terra, allora subito il mio corpo ruotava e virava dolcemente verso la giusta direzione. Certo mi serviva concentrazione per cogliere le sottili variazioni dei venti da cui è governato invisibilmente il nostro cielo, appena mi distraevo, perdevo infatti quota. È così che arrivai a sfiorare le nuvole che con la folle velocità che avevo acquisito si aprivano in un varco dietro al mio passaggio lasciando intravedere le enormi praterie che stavo sorvolando. Non potevo non avvicinarmi, volevo sentire l’odore fragrante che i fiori e l’erba rilasciano quando sono riscaldati dal sole, volevo sentire la terra rilasciare lentamente il suo tepore e la sua umidità, volevo sfrecciare e roteare e fare acrobazie tra le frasche scoprendo così tante sfumature di verde che neanche pensavo potessero esistere, e le foglie tutte diverse e l’odore muschioso sui tronchi degli alberi, attraversando boschi e poi improvvisamente ritrovandomi a perdita d’occhio su praterie immense tutte arate in direzioni diverse e ognuna con il proprio grado di marrone, giallo, di verde e di altri colori di fiori che sbucavano qui e lì come in una pittura puntinista mischiandosi in un amalgama di colori che mi sorprendeva sempre. Giungendo al suolo, sempre cogliendo le spire del vento, sfioravo specchi d’acqua e laghi e mari che zampillavano dietro al mio passaggio e nell’acqua trasparente potevo vedere i pesci che si avvicinavano alla superficie incuriositi dal mio passaggio, e le alghe verdi smeraldo muoversi come capelli in un movimento sinuoso. Poi risalivo di nuovo nel cielo. È in una di queste risalite che mi accorsi dall’alto di una vecchia casetta di campagna, ma non quel rustico certe volte volgare e decadente, aveva un che di fiabesco, di gioioso, era circondata da campi di alberi con ogni genere di frutto. Non potei non notare, nonostante ormai trasportato dalle correnti mi trovassi molto in alto, due figure umane, piccole come formiche, intente ad affaccendarsi alla raccolta di tanta bontà della natura; con le loro mani sagge, che conoscono i tempi della natura e sono intrise di una sapienza terrestre, sceglievano quale frutto era pronto e quale dovesse essere ancora lasciato a maturare. Incuriosito mi avvicinai e in un attimo di distrazione persi il controllo del mio volo. Finii, rotolando in una capriola, sotto una lunga fila di alberi di mele rosse. 
 Il vecchietto, uno dei due, che assomigliava a mio nonno, mi chiese con voce tranquilla come ci ero arrivato qui, e con una tiepida accoglienza, come quando al mattino assaggi la fetta di pane caldo il cui calore si irradia dalla bocca a tutto il corpo, mi invitò ad assaggiare alcuni dei frutti che aveva raccolto. Il luogo del ristoro era un traballante gazebo di legno, che, se non per miracolo, forse stava ancora in piedi tenuto da tutte le piante che gli erano cresciute attorcigliandosi intorno, creando una barriera naturale per il sole, che filtrava creando brillantini e punti luminescenti illuminando la scena e il tavolo traboccante di frutta. Non ricordo molto altro di quell’incontro, forse il sole è sceso lasciando il posto alla brezza fresca del crepuscolo, forse le prime stelle nel cielo sono comparse. Non ricordo il sapore della frutta, solamente un dolce invito a tornare ogni qual volta avessi sorvolato le loro praterie.
 </p>
+        </div>
+        <div class="lang-en">
+        <p class="title">The flight</p>
+        <p>I was flying on an old rusty rattletrap, over the years my airplane had undergone many repairs. It was all patched up with metal plates welded roughly together, dotted with screws at the joints. I liked it just the way it was, it gave it a weathered look, a real pre-war airplane. Many called it nothing but a metallic jumble of gears, and yet so far it had carried me wherever I wished, soaring majestic through skies of every colour, the rosy hue of morning, the orange of sunset, that sugar-paper greyish shade that comes before storms when you see the clouds gathering in the distance, through the clear sky of summer just blossomed into a thousand flowers and scents, through the dark grey of thunderstorms. Once we even flew through a lightning storm whose yellow split the clouds ranked and compact in the sky, it seemed almost as though trying to pierce them and climb above we would crumple up, but that did not happen. That time we broke through the clouds and reached the gleaming sun, an intense sapphire blue above, and below, the clouds, which from the ground had seemed so grey, were instead great soft white sheets, foaming like waves in a stormy sea, like bubbles in a bathtub. The airplane's metal skin shone in the sun with an unnatural beauty, as though all those dents, stitches, patches and that reddish rust colour that seemed to trace its every detail could not have been anything but its own. That time up there above the clouds I decided I had to learn to fly. Deep inside I already knew I would manage to fly, it was as if I already knew the technique innate in my chromosomal structure. I already knew that to take flight I would need a running start or else throw myself from a high place, many times I had imagined leaping from the towers of Urbino and soaring over the meadows and gliding on the wind across the greenest hills to reach the snow-capped peaks. I already knew that to fly I would need to catch the currents of the wind, to perceive the slightest vibrations and the rising thermals passing through my body, to feel the spirals of wind making my hairs stand on end and then to understand that it was time to spread my arms and open my hands to ride the current. I had learned this by watching the fierce gusts of wind that formed between the narrow streets of Urbino, or by looking at the sea and being able to tell a few seconds in advance when the gust would come, seeing the sea ripple with tiny little waves, the gabbianelle. I had also learned to see the wind that carried me up, it appeared to my eyes like the lightest white silk, so thin as to be practically transparent and visible only when it folded in just the right direction against the light. So I gathered my courage, I could do it, I had already dreamed of flying and in my dreams I had already put my theories into practice. I took a step toward the front hatch, flung it open and a blast of freezing high-altitude wind hit me, right after came the tepid warmth of the sun, I moved closer and without hesitation I threw myself into the void. I let the wind caress me as it wrapped around me and without asking anything it cradled me in its great invisible arms, I spread both legs and arms as if they were wings, and at once I seized the reins of the wind and could steer it depending on how much I closed them trying to bring them together or spread them trying to embrace the horizon. If I wanted to turn right or left I only had to tilt the respective arm toward the earth, and immediately my body would rotate and gently veer in the right direction. Of course I needed concentration to catch the subtle shifts in the winds that invisibly govern our sky, as soon as I got distracted, I would lose altitude. And so I came to graze the clouds which, with the wild speed I had gained, parted in a gap behind my passage letting me glimpse the vast meadows I was flying over. I could not help but draw closer, I wanted to smell the fragrant scent that flowers and grass release when warmed by the sun, I wanted to feel the earth slowly giving off its warmth and its dampness, I wanted to dash and spin and do acrobatics through the branches discovering so many shades of green I never thought could exist, and the leaves all different and the mossy smell on tree trunks, passing through woods and then suddenly finding myself as far as the eye could see over immense meadows all ploughed in different directions and each with its own shade of brown, yellow, green and other colours of flowers popping up here and there like a pointillist painting blending into an amalgam of colours that always surprised me. Reaching the ground, still catching the spirals of wind, I skimmed bodies of water and lakes and seas that splashed behind my passage and in the transparent water I could see fish rising to the surface curious about my passing, and emerald green algae swaying like hair in a sinuous movement. Then I would climb back up into the sky. It was on one of these ascents that I noticed from above an old country cottage, but not that sometimes vulgar and decadent rustic kind, it had something fairytale-like about it, something joyful, it was surrounded by fields of trees bearing every kind of fruit. I could not help noticing, even though by now carried by the currents I was very high up, two human figures, tiny as ants, busy gathering so much of nature's bounty; with their wise hands, which know the rhythms of nature and are steeped in an earthly wisdom, they chose which fruit was ready and which should be left to ripen still. Curious, I drew closer and in a moment of distraction I lost control of my flight. I ended up, tumbling in a somersault, beneath a long row of red apple trees.
+The old man, one of the two, who looked like my grandfather, asked me in a calm voice how I had got here, and with a warm welcome, like when in the morning you taste a slice of hot bread whose warmth radiates from the mouth to the whole body, he invited me to taste some of the fruits he had gathered. The resting place was a rickety wooden gazebo, which, if not by miracle, perhaps still stood only because all the plants that had grown twisting around it held it up, creating a natural barrier against the sun, which filtered through making sparkles and luminous points lighting up the scene and the table overflowing with fruit. I don't remember much else of that encounter, perhaps the sun went down giving way to the cool breeze of dusk, perhaps the first stars appeared in the sky. I don't remember the taste of the fruit, only a sweet invitation to return whenever I flew over their meadows.
+</p>
+        </div>
     </div>
 
     <div class="box grigio" id="temporale">
+        <div class="lang-it">
         <p class="title">Il temporale</p>
         <p>Il temporale per me è un momento di pausa. Tutti dovremmo fermarci, interrompere subito ciò che stiamo facendo e restare a guardare il cielo che cambia e si trasforma veloce, e le nuvole che vengono spazzate via dal vento e sono grosse e morbide e grigie e scure e spaventose, a volte. E la pioggia che scende giù forte, poi piano, poi storta  e picchia sui tetti delle case, sulle lamiere, sulle macchine, sulle foglie degli alberi, sulle finestre, sugli ombrelli, sulle nostre teste, sulle roulotte, sulle tende e che bello è stare in tenda quando piove! poi la pioggia entra anche dentro la finestra e bagna tutto, le lenzuola, il cuscino e io rimango lì, finché mi bagno anche io. La camera si riempie di acqua e si allaga e tutta la casa diventa una enorme piscina strana, con diverse vasche piene gli oggetti che galleggiano. Anche fuori si allaga tutto, ma non di un’acqua fangosa, anzi limpidissima e splendente, cristallina in cui nuotano insetti e animali e umani, anche gli oggetti che erano dentro le case delle persone. Tutto si riversa nelle strade che diventano come un mare o un lago, o forse, meglio, un ruscello pieno di flutti. Una barchetta giocattolo di plastica galleggia per la strada, uguale una ciabatta che sembra anch'essa una barchetta. le matite e le penne e i bicchieri, le forchette, i coltelli e i piatti, i pettini, i libri, gli spazzolini e il dentifricio, i computer e i telefoni, le sedie, i tavoli, i tavolini da caffè e da salotto, le mensole, i letti, i quadri, i vasi, i tappeti, le tende, le lenzuola, i cuscini e i materassi, le lavastoviglie e le lavatrici e le asciugatrici, e tutti gli elettrodomestici che popolano le nostre case. Tutto finisce per strada e affonda nell’acqua trasparente e viene assorbito dalla terra. Allora tutto sparisce e rimangono case vuote, senza problemi, senza pensieri brutti, senza oggetti che funzionano o che non funzionano o che funzionano poco o che sono invecchiati. Quindi spunta il sole e tutto se ne è andato via con la pioggia e le nuvole, tutte le cose grigie e cattive; anche se a me il temporale piace molto. E dopo la pioggia, quando spunta il sole mi sento tranquillo, con quel brontolio lontano e vedo le foglie cadute e i rami e il sole che colpisce e si irradia tra le nuvole. Tutto si fa più leggero e rarefatto e più innocuo, mi sembra. Il temporale era così cattivo eppure ha solo rinfrescato l’aria. 
 </p>
+        </div>
+        <div class="lang-en">
+        <p class="title">The storm</p>
+        <p>The storm for me is a moment of pause. We should all stop, immediately interrupt whatever we are doing and stay to watch the sky as it changes and transforms swiftly, and the clouds being swept away by the wind, and they are big and soft and grey and dark and frightening, at times. And the rain coming down hard, then softly, then slanting, and it beats on the rooftops, on the metal sheets, on the cars, on the leaves of the trees, on the windows, on the umbrellas, on our heads, on the caravans, on the tents, and how lovely it is to be in a tent when it rains! Then the rain comes in through the window too and wets everything, the sheets, the pillow, and I stay there, until I get wet too. The room fills with water and floods and the whole house becomes an enormous strange swimming pool, with different basins full of floating objects. Outside too everything floods, but not with muddy water, on the contrary, crystal clear and gleaming, transparent, where insects and animals and humans swim, and the objects that were inside people's houses too. Everything pours into the streets that become like a sea or a lake, or perhaps, better, a stream full of currents. A toy plastic boat floats along the street, just like a flip-flop that also looks like a little boat. Pencils and pens and glasses, forks, knives and plates, combs, books, toothbrushes and toothpaste, computers and telephones, chairs, tables, coffee tables and living room tables, shelves, beds, paintings, vases, rugs, curtains, sheets, pillows and mattresses, dishwashers and washing machines and dryers, and all the appliances that populate our houses. Everything ends up in the street and sinks into the transparent water and is absorbed by the earth. Then everything disappears and empty houses remain, without problems, without bad thoughts, without objects that work or that don't work or that barely work or that have grown old. Then the sun comes out and everything has been washed away with the rain and the clouds, all the grey and mean things; even though I like the storm very much. And after the rain, when the sun comes out, I feel calm, with that distant rumbling, and I see the fallen leaves and the branches and the sun striking and radiating through the clouds. Everything becomes lighter and more rarefied and more harmless, it seems to me. The storm was so mean and yet it only freshened the air. 
+</p>
+        </div>
     </div>
 
     <div class="box giallo" id="noia">
+        <div class="lang-it">
         <p class="title">Noia, tristezza e tranquillità</p>
         <p>Che tristezza, che noia, che tranquillità, tre parole che sono così diverse eppure stanno così bene insieme. Mi stupisco che una parola così bella come tranquillità possa stare bene con le altre due così negative, non ci avevo mai pensato. 
 Seduto al tavolo ho mangiato un’insalata tristissima, il rumore sfocato delle macchine che passano dietro la siepe, il fruscio del bambù e delle foglie, la stanza vuota che si riempie di oggetti di altre case, oggetti pregni di ricordi. Le tende si muovono leggermente e cadono giù fino a terra, tra le aperture vedo il giardino irradiato di sole. Che tristezza, che noia, che tranquillità questa giornata di fine agosto. 
@@ -390,17 +491,53 @@ Bianca e grigia.
 
 Ecco sono queste le nuvole che mi piacciono quelle grosse, enormi, bianche e grigie, con tuoni ovattati che le accompagnano e poi comincia un po’ di vento. Cade la pioggia e le foglie si girano, e il grigio e il verde sono bellissimi. Il grigio anche se è triste e noioso, fa risaltare gli altri colori. Il verde e il grigio del temporale mi mettono tranquillità. 
 </p>
+        </div>
+        <div class="lang-en">
+        <p class="title">Boredom, sadness and tranquility</p>
+        <p>What sadness, what boredom, what tranquility — three words that are so different and yet sit so well together. I am amazed that a word as beautiful as tranquility can sit well with the other two, so negative; I had never thought about it. 
+Sitting at the table I ate a most sorrowful salad, the blurred noise of cars passing behind the hedge, the rustling of the bamboo and the leaves, the empty room filling up with objects from other houses, objects steeped in memories. The curtains sway slightly and fall down to the ground; through the openings I see the garden irradiated with sun. What sadness, what boredom, what tranquility, this late-August day. 
+Every object rests, the books stand orderly on the corner bookshelf, the plants droop down looking sad too, the paintings hang motionless, straight (why don't we hang them slightly crooked instead?), the fireplace is unlit, waiting for winter to start up again, the rug stinks of old, of damp, of dust — and poor thing! always being trodden on; the sofa cover has faded. Hanging from the fireplace, a fur hat with a tail (it looks like a marmot lying there all shrivelled up). This Kundera makes me sad too — if only he wrote something more cheerful! 
+I wait for something to happen, but nothing happens, a disheartening wait. I have no plans — what will I do? Where will I go? Will you forget me? And you? And you? 
+Too many things await me and I cannot get a hold of them; perhaps I will wait for them to happen. 
+
+If I looked at the sky
+I could understand where I am
+And where are you instead
+Is that a plane passing?
+And what are the clouds like?
+Are they big and white
+Or rarefied and torn
+I like a view at the park
+A villa,
+the magnolia,
+The blue sky
+And a giant cloud
+White and grey.
+
+There, those are the clouds I like — the big, enormous, white and grey ones, with muffled thunder accompanying them, and then a little wind picks up. The rain falls and the leaves turn over, and the grey and the green are beautiful. The grey, even though it is sad and boring, makes the other colours stand out. The green and the grey of the storm bring me tranquility. 
+</p>
+        </div>
     </div>
 
     <div class="box verde" id="rovine">
+        <div class="lang-it">
 <p class="title">Rovine</p>
         <p>Quella volta, per un momento, si palesarono davanti ai miei occhi immagini come un abbaglio, un lampo, poco più di un secondo, e poi come erano arrivate, pure se n’erano andate lasciando in me una strana sensazione di vuoto, di nostalgia di qualcosa che non si era completato, che era durato un solo istante eppure sarebbe dovuto essere interminabile. 
 Erano delle rovine bianche, di marmo, erose dalla pioggia che l’aveva scavate lentamente, dai batteri e piccoli esseri che ne avevano fatto la loro casa, dal ruscello che passava di fianco scavandole in una curva sinuosa. Del muschio verde cresceva lì dove l’acqua scrosciava sul blocco di marmo, una colonna il cui capitello aveva una decorazione floreale che scoppiava in mille riccioli e ghingheri. Con il tempo, avendo trovato ormai per sempre il luogo del suo riposo, le piante ne avevano fatto terreno proprio, crescendo smisuratamente e mescolandosi con quelle decorazioni umane che tanto erano armoniche ispirate alla natura stessa. Un ricciolo di una pianta rampicante si allineava in prospettiva, dal mio punto di vista, con il ricciolo del capitello, allora non potevo che rattristarmi pensando al grigio prodotto industriale che, sovrano dei nostri tempi, ci aveva allontanati completamente dalla sottile armonia che governa gli esseri naturali, costringendoci ad una fatica inutile. 
 Spostando lo sguardo un po' più su, capivo che quella colonna altro non era che il resto di un palazzo stile liberty ormai anch'esso decadente. Mi aveva colpito il parapetto del terrazzino della finestra centrale del secondo piano che probabilmente dava sul corridoio dal quale si poteva accedere alle diverse stanze del palazzo. Mi è difficile descrivere quel groviglio di stringhe di ferro che si disponevano in un ornamento che sembrava ispirato forse alle forme di alcune conchiglie, che si aprono in spirali nascondendo il mistero del mare. il resto della casa anch’esso era ricoperto da una folta edera che ne lasciava a stento intravedere la forma. mi piaceva vedere come la luce del sole entrava da quella finestra centrale tagliandosi sulla sagoma geometrica e proiettando sulle pareti un fascio di luce obliqua che illuminava la densità dell’aria e quelle particelle che galleggiano in un moto perpetuo spostandosi al passaggio del mio sguardo. Quelle particelle svelano la sottile intimità dell’assenza riempiendo il vuoto della stanza in modo impercettibile, creando un solido luminoso di materia impossibile.  
 </p>
+        </div>
+        <div class="lang-en">
+        <p class="title">Ruins</p>
+        <p>That time, for a moment, images appeared before my eyes like a dazzle, a flash, barely more than a second, and then just as they had arrived, they had gone, leaving in me a strange sensation of emptiness, of nostalgia for something that had not been completed, that had lasted a single instant and yet should have been endless. 
+They were white ruins, of marble, eroded by the rain that had carved them slowly, by the bacteria and tiny creatures that had made them their home, by the stream that ran alongside carving them in a sinuous curve. Green moss grew where the water cascaded on the marble block — a column whose capital bore a floral decoration bursting in a thousand curls and curlicues. With time, having found at last and forever the place of its rest, the plants had claimed the ground as their own, growing immeasurably and blending with those human decorations that were so harmonious, inspired by nature itself. A tendril of a climbing plant aligned in perspective, from my vantage point, with the curl of the capital, and I could not help but feel saddened thinking of the grey industrial product that, sovereign of our times, had drawn us completely away from the subtle harmony that governs natural beings, constraining us to a useless toil. 
+Shifting my gaze a little higher, I understood that that column was nothing but the remains of an art-nouveau palazzo, itself by now decadent. I had been struck by the parapet of the small balcony on the central window of the second floor, which probably opened onto the corridor from which one could access the various rooms of the palazzo. It is hard for me to describe that tangle of iron strips arranged in an ornament seemingly inspired by the forms of certain shells, which unfurl in spirals hiding the mystery of the sea. The rest of the house, too, was covered by a thick ivy that barely let one glimpse its shape. I liked watching how the sunlight entered through that central window, cutting itself along the geometric silhouette and casting on the walls an oblique beam of light that illuminated the density of the air and those particles floating in perpetual motion, shifting at the passing of my gaze. Those particles reveal the subtle intimacy of absence, filling the emptiness of the room imperceptibly, creating a luminous solid of impossible matter.  
+</p>
+        </div>
     </div>
 
     <div class="box viola" id="tesi">
+                <div class="lang-it">
                 <p class="title">Tesi, capitolo ultimo</p>
         <p>Dopo aver letto le mie conclusioni, che poi, come ho detto, non erano tanto annunciare la fine di un percorso quanto, anzi, l'inizio, vorrei ora, appunto, segnare questo inizio con delle istruzioni. Istruzioni per la vita, oppure vita istruzioni per l’uso, istruzioni per immaginare, per vivere, per vivere l'immaginazione, per immaginare come vivere o per vivere come si immagina. 
 
@@ -815,9 +952,427 @@ Forse più tardi, quando si volterà ed entrerà all’ultimo piano di casa sua,
 Ma faccia attenzione, è facile inciampare e cadere. 
 Ci sono cose che si lasciano vedere solo salendo all’indietro e altre che non vogliono, che hanno paura di quella salita che le costringe ad esporsi così tanto; ostinate nel proprio aspetto e nella propria maschera si vendicano crudelmente di chi sale all’indietro per vedere il resto, il campetto di Peñaloza o i pioppi del cimitero.
 </p>
+                </div>
+                <div class="lang-en">
+                <p class="title">Thesis, last chapter</p>
+        <p>After reading my conclusions, which then, as I said, were not so much announcing the end of a path as, rather, the beginning, I would now like to mark this beginning with instructions. Instructions for life, or life instructions for use, instructions for imagining, for living, for living the imagination, for imagining how to live or for living as one imagines. 
+
+This chapter is perhaps also a collection, a container, a box in which I put all the things I wish I had known before, or that I already knew but that did not fit directly into the thesis. This chapter justifies what could not be justified in the others. Yet it is still part of it and, being very instinctive, is perhaps the most communicative, eloquent, empathetic one. This section is an error, a rupture in the order that has been followed until now — it is the part I enjoy the most. 
+
+It is certainly not a complete collection — who could I ever be to achieve that? Indeed, perhaps no one ever truly could. It is, instead, very incomplete.
+
+Yoko Ono, Perec, Sottsass, Sophie Calle and Paul Auster, Marcel Proust and Julio Cortázar appear. You might wonder what these authors have to do with one another? Perhaps between some of them one can trace a subtle line that encloses them in the same set, but a set of what? What I mean is that this is the most authorial part, in which I allowed my personal sensibility to choose, one by one, the texts included here. I would say they are all united by a certain lightness, by a keen sensibility toward reality. It seems to me that all these authors, whether giving explicit instructions, whether recounting their own experience, whether meticulously exploring the furrows of their own memory, have understood how to grasp the utopian margin of reality, the unreal margin of the real.
+
+On one hand, we have Perec who, by scrutinising the everyday and the detail attentively, arrives at creating a fervid imagination of the possible, of what does not yet exist but lies latent in what passes unnoticed before many eyes. 
+On the other hand, there is Yoko Ono who immediately seeks to break the real in order to formulate new, unprecedented perspectives. Yoko Ono works in a subversive way, trying to empty conventions; she conceives them in an almost impossible and unreal manner. If Perec, at the margin of imagination, is far more rational and methodical, Yoko Ono lets herself be carried away by the river in flood of the irrational. Her instructions are not tasks or instructions in the traditional sense, or rather, they might be realisable at the limit of the possible, but they remain for the most part mental imaginative acts.
+
+Different is Sottsass's approach when he speaks of his childhood and the emotions he discovered and learned. He certainly does not give us instructions, he does not ask us to create situations: he shows, through his experience and his delicate and intimate words, how one can learn through the very naive observation of everyday life. Sottsass 'shows' how the imaginative instructions that Yoko Ono, Perec or Sophie Calle systematise and make explicit are, in reality, nothing but natural ways of being in the world — one need only realise it. Sottsass does not tell us to do this or that; he shows us how he looked and felt so that we, learning from him, may develop a deep and naive perceptual empathy with what surrounds us. This same intimate energy emerges in his work Metaphors, through which he communicates the sensation of emptiness and fragile transitoriness intrinsic in human existence. 
+Superstudio too, in their Fundamental Acts, seeks to show rather than explain. The five elementary acts — life, education, ceremony, love, death — become 'visual instructions' for learning the poetics of attention. Superstudio succeeds in creating a personal and eloquent poetic language, of visual meditation, of sacralisation and imagination of the everyday.
+
+Then Proust, marvelling so greatly at the feeling he experienced upon biting into a madeleine, after the sip of tea, seeks to give an explanation for such wonder and in doing so unwittingly provides us with a method: in the everyday world, in the experiences we continuously live through, there is actually enclosed — differently for each of us — a far more complex world. This world can be explored at our leisure, by turning to the soul to 'find truth,' to seek it, and not only that, to create it. This hidden world concealed among the folds of experience is a process not only of searching but also of construction. A process that must be repeated, iterated many times to understand it and know it completely, perhaps. 
+
+Sophie Calle and Paul Auster show us instead how the everyday can become a game, a challenge, and how these imaginative acts that we impose upon ourselves in daily life can change our vision of reality. Cortázar too asks us to break the rigidity of the everyday to show us that not much is needed to have a different vision of what we live. If climbing stairs, rather than looking ahead at the monotonous scrolling of the steps, we looked backwards, then we would notice, for instance, the unveiling of a landscape. 
+
+If these authors were to answer the question 'how to imagine the everyday?' they would reply that no complex tools are required to transform the ordinary into the extraordinary — one need only have a different gaze. Whether that gaze be attentive, naive, subversive, introspective, what matters is to recognise that the utopian margin surrounding reality is always present, waiting to be discovered. 
+
+And now that the preamble to justify this chapter is over, nothing remains but to enjoy yourselves, I hope, reading the flowers I have gathered. 
+
+--------------------
+
+
+<span class="autore">Yoko Ono</span> – <i>Grapefruit</i>
+
+<i>Room piece I</i> 
+
+Stay in a room for a week.
+Do not take anything except water.
+Have someone whisper to you in
+the end of the week.
+
+--------------------
+
+<i>Room piece II</i>
+
+Stay in a room for ten days.
+Do not eat.
+Smoke.
+Whisper to each other in the
+end of the ten days.
+
+1963 winter
+
+--------------------
+
+<i>Room piece III</i>
+
+Stay in a room for a month.
+Do not speak.
+Do not see.
+Whisper in the end of the month.
+
+1963 winter
+
+--------------------
+
+<i>City piece</i> 
+
+Walk all over the city with an empty
+baby carriage. 
+
+1961 winter
+
+--------------------
+
+<i>City piece</i>
+
+Step in all the puddles in the city. 
+
+1963 autumn
+
+--------------------
+
+<i>Whisper piece</i>
+
+a) Whisper. Ask the wind to take it to the
+end of the world.
+b) Whisper to the clouds. Ask them to remember
+c) Whisper what happened that day to the
+reeds. Weave a pair of sandals with them and
+send it to a friend.
+d) Whisper all your secret thoughts to a tree.
+Make a guitar out of it and send it to a
+woman.
+e) Whisper a secret to a young tree. Make a
+chair out of it and send it to a man.
+f) Whisper your name to a stone. Send it to
+a stranger.
+g) Whisper the first word that came to you
+to a person next to you. 
+
+1961 spring
+
+--------------------
+
+<i>Map piece</i> 
+
+Draw an imaginary map.
+Put a goal mark on the map where you
+want to go.
+Go walking on an actual street according
+to your map.
+If there is no street where it should be
+according to the map, make one by putting
+the obstacles aside.
+When you reach the goal, ask the name of
+the city and give flowers to the first
+person you meet.
+The map must be followed exactly, or the
+event has to be dropped altogether.
+Ask your friends to write maps.
+Give your friends maps. 
+
+1962 summer
+
+--------------------
+
+<i>Mask piece I</i> 
+
+Make a mask larger than your face.
+Polish the mask every day.
+In the morning, wash the mask instead
+of your face.
+When somebody wants to kiss you,
+let the person kiss the mask instead. 
+
+1961 winter
+
+--------------------
+
+<i>Clock piece</i> 
+
+Select a clock.
+Set it on time.
+You may rewind the clock but never
+reset it.
+Call it your life clock.
+Live accordingly. 
+
+1964 spring
+
+--------------------
+
+<i>Mirror piece</i>
+
+Instead of obtaining a mirror,
+obtain a person.
+Look into him.
+Use different people.
+Old, young, fat, small, etc. 
+
+1964 spring
+
+--------------------
+
+<i>Room piece</i> 
+
+When a room is needed, obtain a person instead
+of a room.
+Live on him.
+When another room is needed, obtain another
+person instead of another room.
+Live on them. 
+
+1964 spring
+
+--------------------
+
+<i>Mask piece</i> 
+
+Wear a blank mask.
+Ask people to put in wrinkles, dimples,
+eyes, mouth, etc., as you go. 
+
+1964 spring 
+
+--------------------
+
+<i>Name piece</i> 
+
+Change your name by the period
+of your age.
+By the year.
+By the day.
+By occasions.
+By the color of your dress. 
+
+1964 spring
+
+--------------------
+
+<i>Hand piece</i>
+
+Raise your hand in the evening light
+and watch it until it becomes transparent
+and you see the sky and the trees through it.
+
+--------------------
+
+<i>Body piece</i> 
+
+Stand in the evening light until you
+become transparent or until you fall
+asleep. 
+
+1961 summer
+
+--------------------
+
+<i>Air talk</i>
+
+It's sad that the air is the only
+thing we share.
+No matter how close we get to each other,
+there is always air between us.
+It's also nice that we share the air.
+No matter how far apart we are,
+the air links us. 
+
+From Lisson Gallery brochure '67
+
+--------------------
+
+Build a house
+that serves only to
+make way for the rain
+Wet Bed. nice and cool to make love in
+Spiral staircase for the rain to
+run spirally Rooms that change rain into different
+fountains of various movements
+Rooms that change rain into one hundred
+pieces of happy music
+A house that allows rain to be part of
+it and therefore the thought of a rainy
+day is not an unpleasant one anymore.
+
+From 8 architecture pieces dedicated to a phantom architect. 
+1965 spring
+
+--------------------
+
+Build a dotted line house
+Let people imagine the missing parts (a)
+Let people forget about the missing
+parts (b) 
+
+From 8 architecture pieces dedicated to a phantom architect. 
+1965 spring
+
+--------------------
+
+A floating city
+The second level world
+Upstairs on the clouds
+Mountains and rain roaring underneath
+Like venice, we have to commute by
+boat through air currents to visit
+each others floating houses.
+Cloud gardens to watch all day.
+ 
+From The soundless music (original text in Japanese) 
+1950
+
+--------------------
+
+
+<span class="autore">Georges Perec</span> 
+<i>Species of Spaces</i>
+
+On a useless space
+
+More than once I have tried to think of an apartment in which there would be a useless room, absolutely and deliberately useless. It would not have been a closet, nor an extra bedroom, nor a corridor, nor a cubbyhole, nor a corner. It would have been a space without function. It would have served no purpose, it would have referred to nothing.
+It has been impossible for me, despite many efforts, to follow this idea, this image, to its conclusion. Language itself, it seems to me, proved inadequate to describe this nothing, this void, as though one could only speak of what is full, useful and functional.
+A space without function. Not 'without a precise function,' but precisely without function; not multi-functional (anyone can do that), but a-functional. It would certainly not have been a space solely intended to 'free up' the others (box room, closet, built-in wardrobe, cloakroom, etc.) but a space, I repeat, that would have served no purpose.
+I sometimes manage to think of nothing, without even having to think, like l'Ami Pierrot, about the death of Louis XVI: "all of a sudden I realise I am there, that the metro has just stopped and that having left Dugommier station approximately ninety seconds earlier, I am now neither more nor less at Daumesnil. And yet, I have not managed to think nothing. How to think nothing? How to think nothing without automatically placing something around this nothing, without making it a hole in which one hastens to put something, a practice, a function, a destiny, a gaze, a need, a lack, a surplus...?
+I have tried to follow this soft idea obediently. I have encountered many unusable spaces, and many unused spaces. But I wanted neither the unusable, nor the unused, but the useless. How to chase away functions, rhythms, habits, how to chase away necessity? I imagined I was living in an immense apartment, so immense that I could never remember how many rooms it had (I had known once, "but I had forgotten, and I knew I was by now too old to start such a complicated count over again): all the rooms, except one, would have served some purpose. The essential thing was to find this last one. It was no more difficult, after all, than for the readers of the Library of Babel to find the book that gave the key to all the others. There was indeed something rather close to Borgesian vertigo in wanting to picture a room reserved for listening to Symphony No. 48 in C, known as Maria Theresia, by Joseph Haydn, another devoted to reading the barometer or to cleaning my right big toe...
+I thought of when old Prince Bolkonsky, worried about his son's fate, searches in vain all night long, from room to room, torch in hand, followed by the servant Tikhon carrying fur blankets, for the bed where he will finally fall asleep. I thought of a science fiction novel in which the very notion of habitat would have disappeared; I thought of another story by Borges (The Immortal) in which men, by now freed from the need to live and to die, have built ruined palaces and unusable staircases; I thought of certain prints by Escher, of certain paintings by Magritte; "I thought of a gigantic Skinner box, a room entirely papered in black, with a single button on one of the walls: pressing the button, there appeared for a brief instant something like a grey Maltese cross on a white background...; I thought of the great Pyramids and of the interiors of Saenredam's churches; I thought of something Japanese; I thought of the vague memory I had of a text by Heissenbüttel in which the narrator discovers a room with no doors or windows; I thought of dreams I had had on the same theme, in which I discovered, right in my own apartment, a room I did not know about...
+I never arrived at anything truly satisfying. But I do not think I entirely wasted my time trying to cross this improbable line: through this effort, it seems to me that something transpires which could be a statute of the habitable..."
+"Continue until the place becomes improbable, until you feel, for a brief instant, the impression of being in a foreign city, or better still, until you can no longer understand what is happening and what is not happening, until the entire place becomes alien, and you no longer even know that all this is called a city, a street, buildings, pavements...
+Make it rain torrentially, break everything, let the grass grow, replace the people with cows, watch King-Kong appear, or Tex Avery's giant mouse, at the intersection of rue du Bac and boulevard Saint-Germain, a hundred metres above the rooftops!
+Or else: try to imagine as precisely as possible, beneath the street network, the tangle of the sewers, the passage of the metro lines, the invisible underground proliferation of conduits (electricity, gas, telephone lines, water pipes, pneumatic post network) without which there would be no trace of life on the surface.
+Below, right below, resuscitate the Eocene: the millstone limestone, the marls and rubble, the gypsum, the lacustrine limestone of Saint-Ouen, the sands of Beauchamp, the coarse limestone, the sands and lignites of the Soissons region, the plastic clay, the chalk."
+
+
+"I have begun to make, every month, the description of two of these places. One of these descriptions is made on the spot and aims to be as neutral as possible: sitting in a café, or walking down the street, with a notebook and a pen in hand, I try to describe the houses, the shops, the people I meet, the posters, and in general, all the details that catch my eye. The other description is made somewhere other than the place in question: I then try to describe it from memory and to evoke all the memories that come to mind in connection with this place, both the events that took place there and the people I met there. When these descriptions are finished, I slip them into an envelope which I seal with sealing wax. On several occasions, I have had myself accompanied to the places I was describing by a photographer friend, who, either freely or following my indications, took photographs which I then slipped, without looking at them (except for one), into the corresponding envelopes; I have also sometimes slipped into these envelopes various items capable of serving as evidence later on, for example metro tickets, or receipts from cafés, or cinema tickets, or leaflets, etc.
+I begin these descriptions again every year, taking care, thanks to an algorithm to which I have already alluded (bi-square orthogonal Latin, in this case of order 12), first, to describe each of these places in a different month of the year, and second, never to describe the same pair of places in the same month.
+This undertaking, whose principle is somewhat reminiscent of 'time capsules,' will therefore last twelve years, until all the places have been described twice twelve times. Last year, too preoccupied with the shooting of A Man Asleep (in which most of these places appeared, among other things), I actually skipped the year '73 and therefore only in '81 will I be in possession (provided I don't accumulate further delays...) of the 288 texts produced by this experience. I will then know whether it was worth it: for indeed, I expect nothing other than the trace of a triple ageing: that of the places themselves, that of my memories, and that of my writing."
+"The city
+
+Do not try to find a definition of the city too quickly; it is no small matter, and there is every chance of getting it wrong.
+First of all, make an inventory of what you see. List what you are sure of. Establish elementary distinctions; for example, between what is the city and what is not the city.
+Take an interest in what separates the city from what is not the city. Observe what happens when the city ends. For example (I have already touched upon this subject in relation to streets), an utterly infallible method of knowing whether you are inside Paris or outside Paris consists of looking at the numbers of the buses: if they have two digits, you are inside Paris, if they have three digits, you are outside Paris (unfortunately it is not quite so infallible; but, broadly speaking, it should be).
+Recognise that suburbs have a strong tendency not to remain suburbs.
+Note well that the city has not always been what it is. [...]
+
+Exercises
+Describe the operations performed when taking the metro with the same meticulousness as the Baedeker guide for the London Underground in 1907.
+Rethink certain proposals made by the Surrealists to beautify the city: 
+"The obelisk: round it off and place on top a steel nib made to measure
+The Tour Saint-Jacques: curve it slightly
+The Lion of Belfort: have it gnaw a bone and turn it toward the west
+The Panthéon: slice it vertically and separate the two halves by 50 centimetres
+Try to calculate, with the help of appropriate maps and plans, an itinerary that would allow you to take, one after another, all the buses in the capital.
+Try to imagine what Paris will become:
+Paris will become the winter garden; — fruit trees espaliered along the boulevard. The Seine filtered and warm — abundance of fake precious stones — prodigality of gilding — illumination of houses — light will be stored, since there are bodies that have such properties, such as sugar, the flesh of certain molluscs and Bologna phosphorus. There will be an obligation to paint the façades of houses with the phosphorescent substance and their radiation will light up the streets. Gustave Flaubert (Sketches for Bouvard et Pécuchet, final plan, Pléiade, vol. 2, p. 986)"
+
+
+"Playing with space
+
+Play with large numbers (factorials, Fibonacci series, geometric progressions):
+Distance between the Earth and the Moon: a cigarette paper so fine that 1000 of them would be needed to make a millimetre, folded in half 49 times in succession;
+Distance between the Earth and the Sun: the same, folded in half 58 times in succession;
+Distance between Pluto and the Sun: once again the same: folding it 4 more times would barely suffice, but folding it 5 more times would exceed it by a little more than 3,000,000,000 kilometres;
+Distance between the Earth and Alpha Centauri: 15 more folds;
+Play with distances: prepare a journey that would allow you to visit or travel through all the places that are 314.60 km from your home;
+Look on the maps, on the ordnance survey maps, at the path travelled.
+Play with measurements: reaccustom yourself to feet and leagues (if only to read Stendhal, Dumas or Jules Verne more easily); try, once and for all, to form a precise idea of the nautical mile (and simultaneously, of the knot); remember that a day is a unit of area: it is the area that a farmhand can plough in a day.
+Play with space:
+Cause an eclipse of the sun by raising your little finger (as Leopold Bloom does in Ulysses).
+Have yourself photographed holding up the Leaning Tower of Pisa…
+Begin to accustom yourself to living in a state of weightlessness:
+forget about verticals and horizontals: Escher's engravings, the interior of the interplanetary vehicles in 2001, A Space Odyssey.
+Meditate on these two thoughts of genius (and moreover complementary):
+I often think about the amount of beef that would be needed to make a broth with Lake Geneva. (Pierre Dac, L'os à moelle)
+Elephants are generally drawn smaller than in reality, but a flea always bigger. Jonathan Swift, Thoughts on Various Subjects"
+
+--------------------
+
+
+<span class="autore">Sophie Calle and Paul Auster</span> 
+<i>Gotham handbook</i> 
+
+Personal Instruction for S.C.
+'On How to Improve Life in New York City
+(Because she asked…)
+Paul Auster
+
+Smiling
+Smile when the situation doesn't call for it. Smile when you're feeling angry, when you're feeling miserable, when you're feeling most crushed by the world--and see if it makes any difference: a Smile at strangers in the street. New York can be dangerous, so you must be careful. If you prefer, smile only at female strangers. (Men are beasts, and they must not be given the wrong idea.) Nevertheless, smile as often as possible at people you don't know. Smile at the bank teller who gives you your money, at the waitress who gives you your food, at the person sitting across from you on the IRT.
+See if anyone smiles back at you.
+Keep track of the number of smiles you are given each day.
+Don't be disappointed when people don't smile back at you.
+Consider each smile you receive a precious gift. 
+
+Talking to Strangers
+There will be people who talk to you after you smile at them. You must be prepared with flattering comments.
+Some of these people will talk to you because they feel confused or threatened or insulted by your show of friendliness. ("You got a problem, lady?") Plunge in immediately with a disarming compliment. "No, I was just admiring your beautiful tie." Or: "I love your dress."
+Others will talk to you because they are friendly souls, happy to respond to the human overtures that come their way. Try to keep these conversations going as long as you can. It doesn't matter what you talk about. The important thing is to give of yourself and see to it that some form of genuine contact is made. 
+If you find yourself running out of things to say, bring up the subject or the weather. Cynics regard this as a banal topic, but the fact is that no subject gets people talking faster. Stop and think about it for a moment, and you'll begin to see a metaphysical, even religious quality to this preoccupation with wind-chill factors and Central Park snowfall accumulations. Weather is the great equalizer. There is nothing anyone can do about it, and it affects us all in the same way--rich and poor black au white, healthy and sick. The weather makes no distinctions when it rains on me, it also rains on you. Unlike most of the problems we face, it is not a condition created by man. It comes from nature, or God, or whatever else you want to call the forces in the universe we cannot control. To discuss the weather with a stranger is to shake hands and put aside your weapons. It is a sign of good will, an acknowledgement
+of your common humanity with the person you are talking to.
+With so many things driving us apart, with so much hatred and discord in the air, it is good to remember the things that bring us together. The more we insist on them in our dealings with strangers, the better morale in the city will be. 
+
+Beggars and Homeless People
+I'm not asking you to reinvent the world. I just want you to pay attention to it, to think about the things around you more than you think about yourself. At least while you're outside, walking down the street on your way from here to there.
+Don't ignore the miserable ones. They are everywhere, and a person can grow so accustomed to seeing them that he begins to forget they are there. Don't forget.
+I'm not asking you to give all your money to the poor. Even if you did, poverty would still exist (and have one more member among its ranks).
+At the same time, it's our responsibility as human beings not to harden our hearts. Action is necessary, no matter how small or hopeless our gestures might seem to be.
+Stock up on bread and cheese. Every time you leave the house, make three or four sandwiches and put them in your pocket. Every time you see a hungry person, give him a sandwich.
+Stock up on cigarettes as well. Common wisdom says that cigarettes are bad for your health, but what common wisdom neglects to say is that they also give great comfort to the people who smoke them.
+Don't just give one or two. give away whole packs.
+If you find your pockets can't hold enough sandwiches, go to the nearest MacDonald's and buy as many meal coupons as you can afford. Give these coupons away when you're out of cheese sandwiches. 
+You might not like the food at MacDonald's, but most people do. Considering the alternatives, they give pretty good value for the money.
+These coupons will be especially helpful on cold days. Not only will the hungry person be able to fill his stomach, he'll be able to go inside somewhere and get warm. 
+If you can't think of anything to say when you give the coupon to the hungry person, talk about the weather.
+
+Cultivating a Spot
+People are not the only ones neglected in New York. Things are neglected as well. I don't just mean big things like bridges and subway tracks, I mean the small, barely noticeable things standing right in front of our eyes: patches of sidewalk, walls, park benches.
+Look closely at the things around and you'll see that nearly everything is falling apart. 
+Pick one spot in the city and begin to think of it as yours. It doesn't matter where, and it doesn't matter what. A street corner, a subway entrance, a tree in the park. Take on this place as your responsibility. Keep it clean. Beautify it. Think of it as an extension of who you are, as a part of your identity. Take as much pride in it as you would in your own home.
+Go to your spot every day at the same time. Spend an hour watching everything that happens to it, keeping track of everyone who passes by or stops or does anything there. Take notes, take photographs. Make a record of these daily observations and see if a
+learn anything about the people or the place or yourself.
+Smile at the people who come there. Whenever possible, talk to them. If you can't think of anything to say, begin by talking about the weather.
+March 5, 1994
+
+--------------------
+
+
+<span class="autore">Ettore Sottsass</span> 
+<i>Written at Night</i>
+
+"The fear that I did not have, I 'saw' it on my mother's face when a grass snake, or perhaps a viper, slithered out from the blanket spread on the lawn. The fear that I did not have, I 'saw' it on my mother's face when the horse pulling the cart went mad, who knows why, and my mother could not stop it. The perception of the unknown that I certainly did not have, I 'saw' it on the snow, in the blood of the luge racer who had smashed himself against a rock. The wonder that I did not have, I 'saw' it when a gigantic hot air balloon descended near the village and two men dressed in black, with black leather heads and enormous goggles, stepped out of an enormous straw basket. And the joy, that rare kind, the cosmic, total joy that makes children walk skipping and laughing, I 'felt' it when I walked inside the exaggeratedly silent, exaggeratedly fragrant, exaggeratedly friendly forest, accompanied by a big, stout man with red hair and a bit of a red beard." 
+
+--------------------
+
+
+<span class="autore">Marcel Proust</span> 
+<i>In Search of Lost Time</i> 
+
+"one winter's day, on my return home, my mother, seeing me cold, suggested I drink, contrary to my habit, a cup of tea. At first I refused, then, I don't know why, I changed my mind. She sent for one of those short, plump cakes called 'Petites Madeleines' that seem moulded in the fluted valve of a scallop shell. And immediately, mechanically, oppressed by the dreary day and the prospect of a melancholy tomorrow, I brought to my lips a spoonful of tea in which I had let a morsel of madeleine soften. But at the very instant when the liquid mixed with the crumbs of the cake reached my palate, I started, struck by something extraordinary happening inside me. A delicious pleasure had invaded me, isolated, detached from any notion of its cause. It had immediately rendered the vicissitudes of life indifferent to me, its disasters harmless, its brevity illusory, acting in the same way as love, filling me with a precious essence: or rather, that essence was not inside me, I was that essence. I had ceased to feel mediocre, contingent, mortal. Where could such a powerful joy have come from? I felt it was connected to the taste of the tea and the cake, but infinitely surpassed it, could not share its nature. Where did it come from? What did it mean? Where to seize it? I drink a second sip in which I find nothing more than in the first, a third that gives me a little less than the second. It is time I stopped, the virtue of the potion seems to diminish. It is clear that the truth I seek is not in it, but in me. The drink has awakened it, but does not know it, and can only repeat indefinitely, but with ever-weakening force, that same testimony which I cannot interpret and which I would at least like to be able to ask of it again, finding it intact at once, at my disposal, for a decisive clarification. I set down the cup and turn to my mind. Finding the truth is its task. But how? A grave uncertainty, every time the mind feels itself surpassed by itself; when the seeker is one and the same as the unknown country where the search must take place, and all his baggage will be of no use to him. To seek? More than that: to create. He finds himself face to face with something that does not yet exist, something he alone can make real and bring into the light.
+
+[…] What trembles so deep within me must be, surely, the image, the visual memory which, linked to that taste, strives to follow it to me. But it struggles too far away, too confusedly; I can barely seize the neutral reflection in which the elusive vortex of stirred colours blends; but I cannot make out the form, the sole interpreter I could ask to translate for me the testimony of its contemporary, its inseparable companion, the taste, to explain to me what particular circumstance, what past epoch, it concerns.
+
+Will it ever reach the surface of my clear consciousness, that memory, that remote instant which the pull of an identical instant has come from so far to stir, to shake, to raise from the deepest depths of my being?"
+
+--------------------
+
+
+<span class="autore">Julio Cortázar</span> 
+<i>Last Round</i>
+
+Somewhere in the bibliography of which I do not wish to remember, it has been explained at some point that there are stairs for going up and stairs for going down; what was not said then is that there may also be stairs for going backwards.
+The users of these useful devices will understand, without too much effort, that any staircase goes backwards if you climb it with your back turned, but what remains to be seen in such cases is the result of so unusual a process.
+Try it with any outdoor staircase.
+Once the initial sensation of discomfort and even vertigo has been overcome, at every step you will discover a new area which, although it belongs to the area of the previous step, at the same time corrects it, critiques it and expands it. 
+Consider that only a short while ago, the last time you climbed this staircase in the usual way, the world behind you was annulled by the staircase itself, by its hypnotic succession of steps; on the contrary, simply climbing it backwards will suffice for a horizon initially limited by the garden wall to leap to Peñaloza's field, then to embrace the Turca's mill, to burst upon the poplars of the cemetery and, with a little luck, to reach the true horizon, the one from the definition that the teacher taught us in the third grade. 
+And the sky? And the clouds? Count them when you are at the top; drink the sky that from its immense funnel falls full upon your face. 
+Perhaps later, when you turn around and enter the top floor of your house, into your domestic and everyday life, you will understand that there too you should have looked at many things that way, that even in a mouth, in a love affair, in a novel, you should have climbed backwards. 
+But be careful, it is easy to trip and fall. 
+There are things that let themselves be seen only by climbing backwards and others that refuse, that are afraid of that climb that forces them to expose themselves so much; stubborn in their appearance and their mask, they take cruel revenge on whoever climbs backwards to see the rest, Peñaloza's field or the poplars of the cemetery.
+</p>
+                </div>
     </div>
 
     <div class="box azzurro" id="ingenuo">
+        <div class="lang-it">
         <p class="title">Pensiero ingenuo, l'inutile</p>
 
 <p>///WIP///</p>
@@ -862,6 +1417,53 @@ Chi riesce infatti ad esprimere e comunicare questo tipo di pensiero attua sicur
 <div class="footnotes">
 <p id="fn1">1. <span class="autore">Georges Perec</span>, <i>Un uomo che dorme</i>, Quodlibet, p. 66-67.</p>
 </div>
+        </div>
+        <div class="lang-en">
+        <p class="title">Naive thought, the useless</p>
+
+<p>///WIP///</p>
+
+        <p>22.05.2025_11:07
+I have noticed I have this small problem: when I force myself to write, nothing comes out, but as soon as I am doing something else, there it is — my ideas and a thousand thoughts compose themselves, arrange themselves and take shape like a text. Then I must immediately stop everything and write while I have the grace of the muse. 
+Right now, for instance, I was reading Perec, "A Man Asleep," the story of this twenty-five-year-old boy — he is probably going through his quarter-life crisis — who one day decides to stop worrying about anything, to let everything flow and stay there observing the perpetual streaming of life, without letting himself be touched by it. But it is not so much the plot as a certain way of writing and thinking. I therefore understood that what I was reading was a form of naivety. That Perec lives like a child, or rather, it is not that he lives, but he catches, absorbs, lets himself be grazed and nourished by life like a child. So when I read his things I see myself in them a little — not because I think I am like him, but because for me he is a reference figure of thought. 
+Sometimes I think that when I talk about imagination people look at me strangely, as if to say, "what a drag, what is he on about?" or "what a banality, talking about imagination," or "what world does he live in, does he really think he can solve life's real problems with imagination?" The answer is "no!" I do not think I can change anything. I feel strange too talking about imagination, but then I think the problem is you lot making those faces, not me talking about it! Or perhaps it is me talking about it in the wrong terms and you cannot understand. Perhaps, most probably, that is the case. Every time I speak, the words start whirling around in my head like an enormous swirl of leaves, then I can no longer tell in what order to put them, and the thoughts, which just a moment before seemed so right, coherent, true, become a jumble of words that come out uncertain. But I do think things the right way!
+Since I began thinking of imagination as a method and form of thought, I have tried to outline two forms of it. Let us see if I can explain myself. The idea you must form in your head is that of an incestuous family tree in which the supreme parent is "human thought," which has two children: "voyeuristic" imagination and "practical" imagination. These two children mate together and have two more children: "naive imaginative thought" and "active" imaginative thought, depending on whether the genes of one or the other parent prevail. Good — now let me try to analyse this family tree point by point. 
+As for the first child, "voyeuristic" imagination, it can be described with a voyeuristic "let's pretend"; it remains a form of conscious oneiric consumption that resolves itself within itself. We can imagine, for instance, lying on a beach lounger at sunset while seagulls dive down and the wind fizzes on our skin. This form, on its own, produces no tangible result other than offering a refuge from the present, a moment of pause that nevertheless represents, in my opinion, a form of protest against contemporary hyper-productivity and hyper-presence. On the other side, the other little child is a practical imagination that possesses drive, enthusiasm, vitality, and that derives from the first, translating thought into a concrete form. This second imagination has a real consequence in reality. Finally, from the interaction of these two forms of imagination — the first theorising and the second realising — a method of design and thought is born, which are precisely the two grandchildren: "naive" imaginative thought and "active" imaginative thought. This construction allows me, at least in my own head, to justify certain authors who explicitly did not seek to change anything in society but who, nevertheless, exposed their thoughts — perhaps in words or photographs or melodies or illustrations — so that whoever caught them could in turn think in a better way. 
+The thing is, I felt somewhat guilty betraying what I believe is my primary form of thought. Because this thesis, after all, is mostly dedicated to "active" imaginative thought — but here, I want to say that I am only talking about it because I was first able to know, as far as I know at this moment of writing, "naive" imaginative thought! 
+So this extra chapter will be an ode to naive thought. 
+
+23.05.2025_14:23
+In the end, perhaps I will talk about something else. For a few days now, studying the dilettantism proposed by McLuhan — which started from a phrase by Oppenheimer — and reading A Man Asleep by Perec, a certain song by Battiato has also been resonating in my head: "La torre." It goes like this: 
+
+"down from the tower
+I would throw every last one of the directors
+the actors and the household appliances
+on the eve of destruction
+antediluvian dinosaurs will return
+a race of super-reptiles
+that will eat up, sha-la-la-la-la
+the presenters, especially the creative ones
+who play electronic quiz games
+it will eat up those who do but don't know what they do
+those who will be saved
+are those who have no desire to do anything and don't know how to do anything" 
+
+With this text Battiato condemns those who do but do not know what they do, because they act functionally within the system, not authentically; he saves, instead, those who do nothing and don't know how to do anything, who in their uselessness represent a form of innocence, perhaps, of resistance through inaction. 
+But let us try first to lay all the cards on the table — that is, besides Battiato's song, also Perec's book and McLuhan's theory. 
+Perec, with his style of infinite lists and obsessive descriptions and apparently invisible details, shows the life — which perhaps each of us would dream of — of a boy who day after day educates himself in indifference toward everything that surrounds him, spending hours and hours lying in bed looking at the ceiling mapping all its cracks and flaking, or observing a tree and trying to catch all its branches and densest leaves, or reading a newspaper from beginning to end without skipping a single line yet storing nothing, remaining indifferent to the words flowing beneath his eyes. In Perec's own words: "The indifferent one does not ignore the world, nor does he harbour hostility toward it. What you set out to do is not to rediscover the wholesome joys of illiteracy, but rather to read without giving your reading any particular importance. What you set out to do is not to go naked, but to dress without it having to imply refinement or slovenliness; what you set out to do is not to let yourself starve, but simply to nourish yourself.
+Not that you wish to perform such acts in a state of total innocence — for innocence is too big a word: you simply want (assuming this 'simply' can have any meaning) to leave them on ground cleared of all value, neutral, evident, obvious, factual ground that is not reducible to anything else, but above all not functional, since the functional is the worst of all values, the most insidious and the most compromising; so that there should be nothing more to say than: you read, you are dressed, you eat, you sleep, you walk, and these should be actions, gestures, but not proofs and not currency of exchange: your clothing, your food and your reading will no longer speak on your behalf, you will no longer use them to play clever. You will no longer entrust them with the exhausting, impossible, deadly task of representing you."<a class="footnote-ref" href="#fn1e" id="fnref1e">1</a>
+Indifference thus becomes a means to counter functionalisation, because indeed, the functional is the worst of all values. 
+Now let us try for a moment to remember what McLuhan said instead. His critique is directed at professionalism, which in a certain sense can be seen as a functionalisation of knowledge. Amateurs can develop a more complete and integrated perception of reality: they have a holistic vision. In this sense, the amateur is not blocked by the rationality of professionalisation and can employ perceptual and thinking modes that integrate emotion, imagination, and intuition with reason more nimbly. 
+The amateur, therefore, like a child who constantly asks "why?", has the capacity to question and to doubt the fundamental premises of a system. The amateur thus asks: can I do this thing differently? This question necessarily implies an act of imagination, of critical thought. 
+What does this mean? That amateurs ignore the true functionalism of what surrounds them and for this reason manage to think freely from the imposed rules. 
+These three different interpretations meet, in my opinion, in a critique of mechanical thought, against the inauthentic thought that produces without awareness, obeying the rules of the system and remaining trapped.
+So here I would like to assert that even naive imaginative thought, which apparently seems selfish and voyeuristic, actually lies at the foundation of a profound and intimate form of protest by individuality against the hyper-presence and hyper-functionalisation — contemporary and past — ever since we have been increasingly mono-dimensionalising ourselves, regressing to grey, identical and mediocre personalities. 
+Whoever manages to express and communicate this kind of thought certainly enacts a form of critical thinking — not necessarily negative — toward what they experience physically and mentally. This is a form of critical thought that allows us to distance ourselves from reality and see it with different, holistic eyes. A simple comparison: from our earthly position we cannot, or at most only with difficulty, understand that the earth is a sphere, but by taking flight, by distancing ourselves, we manage to perceive the sphericity of the earth we inhabit. In the same way, thinking naively means stepping back in order to understand differently. This form of critical thought, like everything that concerns our mental movements, can be trained. (then introduce Sottsass and the capacity to marvel at small things)
+</p>
+<div class="footnotes">
+<p id="fn1e">1. <span class="autore">Georges Perec</span>, <i>A Man Asleep</i>, Quodlibet, p. 66-67.</p>
+</div>
+        </div>
     </div>
 
     </div>
@@ -869,9 +1471,48 @@ Chi riesce infatti ad esprimere e comunicare questo tipo di pensiero attua sicur
     <button class="download-btn" onclick="window.print()">download as pdf</button>
 
     <script>
-        function switchLang(lang, el) {
-            document.querySelectorAll('.lang-switch a').forEach(a => a.classList.remove('active'));
-            el.classList.add('active');
+        var noteTimer = null;
+        function switchLang(lang) {
+            if (lang === 'en') {
+                document.body.classList.add('en');
+                var dd = document.querySelector('.note-dropdown');
+                if (dd && window.innerWidth <= 768) {
+                    setTimeout(function() {
+                        dd.classList.add('open');
+                        if (noteTimer) clearTimeout(noteTimer);
+                        noteTimer = setTimeout(function() { dd.classList.remove('open'); }, 7000);
+                    }, 10);
+                }
+            } else {
+                document.body.classList.remove('en');
+                var dd = document.querySelector('.note-dropdown');
+                if (dd) dd.classList.remove('open');
+                if (noteTimer) { clearTimeout(noteTimer); noteTimer = null; }
+            }
+            document.querySelectorAll('.lang-switch a, .lang-switch-desktop a').forEach(function(a) {
+                a.classList.remove('active');
+                var t = a.textContent.trim().replace('*', '');
+                if ((lang === 'it' && t === 'it') || (lang === 'en' && t === 'eng')) {
+                    a.classList.add('active');
+                }
+            });
+            var titlesDesktop = { it: 'Pensieri', en: 'Thoughts' };
+            var titlesMobile = { it: 'Pensieri', en: 'Thoughts' };
+            var navLabelDesktop = lang === 'en' ? 'Thoughts' : 'Pensieri';
+            var navLabelMobile = lang === 'en' ? 'Thoughts' : 'Pensieri';
+            document.querySelectorAll('.site-title-desktop .nav-links a:first-child').forEach(function(a) {
+                a.textContent = navLabelDesktop;
+            });
+            document.querySelectorAll('.site-title .nav-links a:first-child').forEach(function(a) {
+                a.textContent = navLabelMobile;
+            });
+            var indexIt = ['Il volo', 'Il temporale', 'Noia, tristezza e tranquillità', 'Rovine', 'Tesi, capitolo ultimo', 'Pensiero ingenuo, l\'inutile'];
+            var indexEn = ['The flight', 'The storm', 'Boredom, sadness and tranquility', 'Ruins', 'Thesis, last chapter', 'Naive thought, the useless'];
+            var items = lang === 'en' ? indexEn : indexIt;
+            document.querySelectorAll('.indice-desktop a').forEach(function(a, i) { a.textContent = items[i]; });
+            document.querySelectorAll('.indice a').forEach(function(a, i) { a.textContent = items[i]; });
+            var btn = document.querySelector('.download-btn');
+            if (btn) btn.textContent = lang === 'en' ? 'download as pdf' : 'scarica come pdf';
         }
 
         document.addEventListener('click', function(e) {
@@ -879,6 +1520,11 @@ Chi riesce infatti ad esprimere e comunicare questo tipo di pensiero attua sicur
             var toggle = document.querySelector('.index-toggle');
             if (!toggle.contains(e.target)) {
                 indice.classList.remove('open');
+            }
+            var noteDropdown = document.querySelector('.note-dropdown');
+            if (noteDropdown && !noteDropdown.contains(e.target)) {
+                noteDropdown.classList.remove('open');
+                if (noteTimer) { clearTimeout(noteTimer); noteTimer = null; }
             }
         });
     </script>
