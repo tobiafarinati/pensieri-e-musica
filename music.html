@@ -289,11 +289,13 @@
 
     <div class="content-wrapper">
         <div id="tracks"></div>
+        <p id="music-note" class="music-note" aria-live="polite"></p>
     </div>
 
     <script>
         (function () {
             var audioDir = "audio/";
+            var tracksManifest = audioDir + "tracks.json";
             var tracksRoot = document.getElementById("tracks");
             var note = document.getElementById("music-note");
             var audioPlayers = [];
@@ -381,6 +383,24 @@
 
             function fileSrc(fileName) {
                 return audioDir + fileName.split("/").map(encodeURIComponent).join("/");
+            }
+
+            function normalizeFileList(items) {
+                if (!Array.isArray(items)) {
+                    return [];
+                }
+
+                var files = items
+                    .map(function (value) {
+                        return cleanFileName(String(value));
+                    })
+                    .filter(function (fileName) {
+                        return /\.(mp3|wav|ogg|m4a)$/i.test(fileName);
+                    });
+
+                return Array.from(new Set(files)).sort(function (a, b) {
+                    return a.localeCompare(b, "it", { numeric: true, sensitivity: "base" });
+                });
             }
 
             function setNote(text) {
@@ -515,6 +535,21 @@
                 return track;
             }
 
+            async function getTracksFromManifest() {
+                var response = await fetch(tracksManifest, { cache: "no-store" });
+                if (!response.ok) {
+                    throw new Error("Manifest non disponibile");
+                }
+
+                var data = await response.json();
+                var files = normalizeFileList(data);
+                if (!files.length) {
+                    throw new Error("Manifest vuoto o non valido");
+                }
+
+                return files;
+            }
+
             async function getTracksFromDirectoryListing() {
                 var response = await fetch(audioDir, { cache: "no-store" });
                 if (!response.ok) {
@@ -527,14 +562,8 @@
                 var files = links
                     .map(function (link) {
                         return cleanFileName(link.getAttribute("href"));
-                    })
-                    .filter(function (fileName) {
-                        return /\.(mp3|wav|ogg|m4a)$/i.test(fileName);
                     });
-
-                return Array.from(new Set(files)).sort(function (a, b) {
-                    return a.localeCompare(b, "it", { numeric: true, sensitivity: "base" });
-                });
+                return normalizeFileList(files);
             }
 
             function renderTracks(files) {
@@ -545,15 +574,19 @@
                     return;
                 }
 
+                setNote("");
                 files.forEach(function (fileName) {
                     tracksRoot.appendChild(createTrack(fileName));
                 });
             }
 
-            getTracksFromDirectoryListing()
+            getTracksFromManifest()
+                .catch(function () {
+                    return getTracksFromDirectoryListing();
+                })
                 .then(renderTracks)
                 .catch(function () {
-                    setNote("Non riesco a leggere automaticamente audio/. Apri il sito con un server statico che mostri i file della cartella.");
+                    setNote("Non riesco a caricare gli audio. Controlla audio/tracks.json oppure i permessi della cartella audio/.");
                     tracksRoot.innerHTML = "";
                 });
         })();
