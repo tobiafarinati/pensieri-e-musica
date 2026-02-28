@@ -19,7 +19,7 @@
         }
 
         .content-wrapper {
-            margin: 0 20vw;
+            margin: 0 25vw;
             filter: url(#photocopy) contrast(1.2) brightness(1.05);
         }
 
@@ -72,7 +72,7 @@
             left: 0;
             right: 0;
             display: none;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
             padding: 0.8em 1em;
             padding-top: max(0.8em, env(safe-area-inset-top));
@@ -81,6 +81,52 @@
             font-family: sans-serif;
             line-height: 1.15;
             z-index: 100;
+        }
+
+        .site-title {
+            color: #000;
+        }
+
+        .lang-switch-desktop {
+            position: fixed;
+            top: 1em;
+            right: 1em;
+            font-size: 14px;
+            font-family: sans-serif;
+            z-index: 100;
+            text-align: right;
+        }
+
+        .lang-switch-desktop a {
+            text-decoration: none;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .lang-switch-desktop a.active {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .lang-switch-desktop span {
+            color: #555;
+            margin: 0 2px;
+        }
+
+        .lang-switch a {
+            text-decoration: none;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .lang-switch a.active {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .lang-switch span {
+            color: #555;
+            margin: 0 2px;
         }
 
         .track {
@@ -96,9 +142,63 @@
             margin-bottom: 0.6em;
         }
 
-        .track audio {
-            width: 100%;
-            height: 32px;
+        .track-audio {
+            display: none;
+        }
+
+        .track-player {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .player-btn {
+            appearance: none;
+            -webkit-appearance: none;
+            border: 0.2px solid #000;
+            background: #fff;
+            color: #000;
+            padding: 0.32em 0.7em;
+            font-family: sans-serif;
+            font-size: 12px;
+            line-height: 1;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-right: 0.6em;
+        }
+
+        .player-btn:focus-visible {
+            outline: 1px dotted #000;
+            outline-offset: 1px;
+        }
+
+        .player-progress {
+            position: relative;
+            flex: 1;
+            min-width: 80px;
+            height: 16px;
+            border: 0.2px solid #000;
+            background: #fff;
+            cursor: pointer;
+            margin-right: 0.6em;
+        }
+
+        .player-progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 0%;
+            background: #000;
+        }
+
+        .player-time {
+            flex: 0 0 auto;
+            white-space: nowrap;
+            font-family: sans-serif;
+            font-size: 12px;
+            line-height: 1;
+            color: #000;
         }
 
         .music-note {
@@ -123,6 +223,10 @@
             }
 
             .site-title-desktop {
+                display: none;
+            }
+
+            .lang-switch-desktop {
                 display: none;
             }
         }
@@ -169,42 +273,291 @@
 <body>
 
     <div class="site-title-desktop">
-        <div class="nav-links"><a href="index.html">Pensieri</a><span>–</span><a href="music.html" class="nav-active">Musica</a></div>
+        <div class="nav-links"><a href="index.html" data-nav="thoughts">Pensieri</a><span>–</span><a href="music.html" data-nav="music" class="nav-active">Musica</a></div>
+    </div>
+
+    <div class="lang-switch-desktop">
+        <a href="#" data-lang="it" class="active">it</a><span>—</span><a href="#" data-lang="en">eng</a>
     </div>
 
     <div class="header">
-        <div class="nav-links"><a href="index.html">Pensieri</a><span>–</span><a href="music.html" class="nav-active">Musica</a></div>
+        <div class="site-title"><div class="nav-links"><a href="index.html" data-nav="thoughts">Pensieri</a><span>–</span><a href="music.html" data-nav="music" class="nav-active">Musica</a></div></div>
+        <div class="lang-switch">
+            <a href="#" data-lang="it" class="active">it</a><span>—</span><a href="#" data-lang="en">eng</a>
+        </div>
     </div>
 
     <div class="content-wrapper">
-
-        <p class="music-note">Metti i tuoi file .mp3 nella stessa cartella e aggiungi i brani qui sotto.</p>
-
-        <!-- Traccia 1 -->
-        <div class="track">
-            <div class="track-title">Titolo brano 1</div>
-            <audio controls preload="metadata">
-                <source src="brano1.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-
-        <!-- Traccia 2 -->
-        <div class="track">
-            <div class="track-title">Titolo brano 2</div>
-            <audio controls preload="metadata">
-                <source src="brano2.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-
-        <!-- Traccia 3 -->
-        <div class="track">
-            <div class="track-title">Titolo brano 3</div>
-            <audio controls preload="metadata">
-                <source src="brano3.mp3" type="audio/mpeg">
-            </audio>
-        </div>
-
+        <div id="tracks"></div>
     </div>
+
+    <script>
+        (function () {
+            var audioDir = "audio/";
+            var tracksRoot = document.getElementById("tracks");
+            var note = document.getElementById("music-note");
+            var audioPlayers = [];
+            var navLabels = {
+                it: { thoughts: "Pensieri", music: "Musica" },
+                en: { thoughts: "Thoughts", music: "Music" }
+            };
+
+            function getInitialLang() {
+                var fromQuery = new URLSearchParams(window.location.search).get("lang");
+                if (fromQuery === "it" || fromQuery === "en") {
+                    return fromQuery;
+                }
+
+                try {
+                    var stored = localStorage.getItem("siteLang");
+                    if (stored === "it" || stored === "en") {
+                        return stored;
+                    }
+                } catch (e) {}
+
+                return "it";
+            }
+
+            function updateLangUrl(lang) {
+                var url = new URL(window.location.href);
+                if (lang === "en") {
+                    url.searchParams.set("lang", "en");
+                } else {
+                    url.searchParams.delete("lang");
+                }
+                history.replaceState({}, "", url.pathname + (url.search ? url.search : "") + url.hash);
+            }
+
+            function switchLang(lang) {
+                var safeLang = lang === "en" ? "en" : "it";
+                var labels = navLabels[safeLang];
+
+                document.documentElement.lang = safeLang;
+                document.querySelectorAll(".nav-links a[data-nav]").forEach(function (link) {
+                    var role = link.getAttribute("data-nav");
+                    if (labels[role]) {
+                        link.textContent = labels[role];
+                    }
+                });
+
+                document.querySelectorAll(".nav-links a[data-nav='thoughts']").forEach(function (link) {
+                    link.setAttribute("href", safeLang === "en" ? "index.html?lang=en" : "index.html");
+                });
+
+                document.querySelectorAll(".nav-links a[data-nav='music']").forEach(function (link) {
+                    link.setAttribute("href", safeLang === "en" ? "music.html?lang=en" : "music.html");
+                });
+
+                document.querySelectorAll(".lang-switch a[data-lang], .lang-switch-desktop a[data-lang]").forEach(function (link) {
+                    link.classList.toggle("active", link.getAttribute("data-lang") === safeLang);
+                });
+
+                try {
+                    localStorage.setItem("siteLang", safeLang);
+                } catch (e) {}
+
+                updateLangUrl(safeLang);
+            }
+
+            document.querySelectorAll(".lang-switch a[data-lang], .lang-switch-desktop a[data-lang]").forEach(function (link) {
+                link.addEventListener("click", function (event) {
+                    event.preventDefault();
+                    switchLang(link.getAttribute("data-lang"));
+                });
+            });
+
+            switchLang(getInitialLang());
+
+            function cleanFileName(href) {
+                var noQuery = href.split("#")[0].split("?")[0];
+                var decoded = decodeURIComponent(noQuery);
+                var fileName = decoded.replace(/^\.?\//, "").replace(/^audio\//, "");
+                return fileName.trim();
+            }
+
+            function displayName(fileName) {
+                return fileName.replace(/\.[^/.]+$/i, "").trim();
+            }
+
+            function fileSrc(fileName) {
+                return audioDir + fileName.split("/").map(encodeURIComponent).join("/");
+            }
+
+            function setNote(text) {
+                if (!note) {
+                    return;
+                }
+                note.textContent = text;
+            }
+
+            function formatTime(seconds) {
+                if (!isFinite(seconds)) {
+                    return "--:--";
+                }
+
+                var total = Math.max(0, Math.floor(seconds));
+                var minutes = Math.floor(total / 60);
+                var secs = total % 60;
+                return String(minutes).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
+            }
+
+            function syncPlayer(audio, button, fill, time) {
+                var progress = 0;
+                if (audio.duration && isFinite(audio.duration) && audio.duration > 0) {
+                    progress = Math.max(0, Math.min(100, (audio.currentTime / audio.duration) * 100));
+                }
+
+                fill.style.width = progress + "%";
+                button.textContent = audio.paused ? "play" : "pause";
+                time.textContent = formatTime(audio.currentTime) + " / " + formatTime(audio.duration);
+            }
+
+            function seekToEvent(audio, progressBar, event) {
+                var rect = progressBar.getBoundingClientRect();
+                if (!rect.width) {
+                    return;
+                }
+
+                var clickX = event.clientX - rect.left;
+                var ratio = Math.max(0, Math.min(1, clickX / rect.width));
+                if (audio.duration && isFinite(audio.duration)) {
+                    audio.currentTime = ratio * audio.duration;
+                }
+            }
+
+            function createTrack(fileName) {
+                var track = document.createElement("div");
+                track.className = "track";
+
+                var title = document.createElement("div");
+                title.className = "track-title";
+                title.textContent = displayName(fileName);
+
+                var audio = document.createElement("audio");
+                audio.className = "track-audio";
+                audio.preload = "metadata";
+                audio.src = fileSrc(fileName);
+                audio.setAttribute("playsinline", "");
+
+                var player = document.createElement("div");
+                player.className = "track-player";
+
+                var button = document.createElement("button");
+                button.type = "button";
+                button.className = "player-btn";
+                button.textContent = "play";
+                button.setAttribute("aria-label", "Riproduci " + title.textContent);
+
+                var progressBar = document.createElement("div");
+                progressBar.className = "player-progress";
+                progressBar.setAttribute("role", "progressbar");
+                progressBar.setAttribute("aria-label", "Progresso " + title.textContent);
+                progressBar.setAttribute("aria-valuemin", "0");
+                progressBar.setAttribute("aria-valuemax", "100");
+                progressBar.setAttribute("aria-valuenow", "0");
+
+                var fill = document.createElement("div");
+                fill.className = "player-progress-fill";
+                progressBar.appendChild(fill);
+
+                var time = document.createElement("div");
+                time.className = "player-time";
+                time.textContent = "00:00 / --:--";
+
+                button.addEventListener("click", function () {
+                    if (audio.paused) {
+                        audio.play();
+                    } else {
+                        audio.pause();
+                    }
+                });
+
+                progressBar.addEventListener("click", function (event) {
+                    seekToEvent(audio, progressBar, event);
+                });
+
+                audio.addEventListener("play", function () {
+                    audioPlayers.forEach(function (otherAudio) {
+                        if (otherAudio !== audio) {
+                            otherAudio.pause();
+                        }
+                    });
+                    syncPlayer(audio, button, fill, time);
+                });
+
+                audio.addEventListener("pause", function () {
+                    syncPlayer(audio, button, fill, time);
+                });
+
+                audio.addEventListener("loadedmetadata", function () {
+                    syncPlayer(audio, button, fill, time);
+                });
+
+                audio.addEventListener("timeupdate", function () {
+                    progressBar.setAttribute(
+                        "aria-valuenow",
+                        String(audio.duration ? Math.round((audio.currentTime / audio.duration) * 100) : 0)
+                    );
+                    syncPlayer(audio, button, fill, time);
+                });
+
+                audio.addEventListener("ended", function () {
+                    syncPlayer(audio, button, fill, time);
+                });
+
+                track.appendChild(title);
+                track.appendChild(player);
+                player.appendChild(button);
+                player.appendChild(progressBar);
+                player.appendChild(time);
+                track.appendChild(audio);
+                audioPlayers.push(audio);
+                return track;
+            }
+
+            async function getTracksFromDirectoryListing() {
+                var response = await fetch(audioDir, { cache: "no-store" });
+                if (!response.ok) {
+                    throw new Error("Directory listing non disponibile");
+                }
+
+                var html = await response.text();
+                var doc = new DOMParser().parseFromString(html, "text/html");
+                var links = Array.prototype.slice.call(doc.querySelectorAll("a[href]"));
+                var files = links
+                    .map(function (link) {
+                        return cleanFileName(link.getAttribute("href"));
+                    })
+                    .filter(function (fileName) {
+                        return /\.(mp3|wav|ogg|m4a)$/i.test(fileName);
+                    });
+
+                return Array.from(new Set(files)).sort(function (a, b) {
+                    return a.localeCompare(b, "it", { numeric: true, sensitivity: "base" });
+                });
+            }
+
+            function renderTracks(files) {
+                tracksRoot.innerHTML = "";
+
+                if (!files.length) {
+                    setNote("Nessun audio trovato in audio/. Aggiungi file .mp3 e ricarica la pagina.");
+                    return;
+                }
+
+                files.forEach(function (fileName) {
+                    tracksRoot.appendChild(createTrack(fileName));
+                });
+            }
+
+            getTracksFromDirectoryListing()
+                .then(renderTracks)
+                .catch(function () {
+                    setNote("Non riesco a leggere automaticamente audio/. Apri il sito con un server statico che mostri i file della cartella.");
+                    tracksRoot.innerHTML = "";
+                });
+        })();
+    </script>
 
 </body>
 
