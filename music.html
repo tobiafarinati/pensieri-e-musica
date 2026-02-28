@@ -296,6 +296,18 @@
         (function () {
             var audioDir = "audio/";
             var tracksManifest = audioDir + "tracks.json";
+            var defaultTracks = [
+                "aaaaaa.mp3",
+                "buio.mp3",
+                "curvare sotto lo sguardo .mp3",
+                "ho cambiato molte stanze.mp3",
+                "ho capito.mp3",
+                "l’incanto.mp3",
+                "macchine e produzione.mp3",
+                "respiro.mp3",
+                "sine.mp3",
+                "sospensione.mp3"
+            ];
             var tracksRoot = document.getElementById("tracks");
             var note = document.getElementById("music-note");
             var audioPlayers = [];
@@ -566,6 +578,10 @@
                 return normalizeFileList(files);
             }
 
+            function getTracksFromFallbackList() {
+                return normalizeFileList(defaultTracks);
+            }
+
             function renderTracks(files) {
                 tracksRoot.innerHTML = "";
 
@@ -584,9 +600,12 @@
                 .catch(function () {
                     return getTracksFromDirectoryListing();
                 })
+                .catch(function () {
+                    return getTracksFromFallbackList();
+                })
                 .then(renderTracks)
                 .catch(function () {
-                    setNote("Non riesco a caricare gli audio. Controlla audio/tracks.json oppure i permessi della cartella audio/.");
+                    setNote("Non riesco a caricare gli audio. Verifica che i file siano pubblicati nella cartella audio/.");
                     tracksRoot.innerHTML = "";
                 });
         })();
