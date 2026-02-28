@@ -1,0 +1,254 @@
+        html {
+            background: #fff;
+            isolation: isolate;
+        }
+
+        body {
+            margin: 0;
+            background: #fff;
+            color: #000;
+        }
+
+        .content-wrapper {
+            margin: 0 25vw;
+            filter: url(#photocopy) contrast(1.2) brightness(1.05);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.06;
+            mix-blend-mode: multiply;
+        }
+
+        .site-title-desktop {
+            position: fixed;
+            top: 1em;
+            left: 1em;
+            font-size: 14px;
+            font-family: sans-serif;
+            line-height: 1.15;
+            color: #000;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: inline;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .nav-links a.nav-active {
+            text-decoration: underline;
+        }
+
+        .nav-links span {
+            color: #555;
+            margin: 0 2px;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8em 1em;
+            padding-top: max(0.8em, env(safe-area-inset-top));
+            background: #fff;
+            font-size: 14px;
+            font-family: sans-serif;
+            line-height: 1.15;
+            z-index: 100;
+        }
+
+        .site-title {
+            color: #000;
+        }
+
+        .lang-switch-desktop {
+            position: fixed;
+            top: 1em;
+            right: 1em;
+            font-size: 14px;
+            font-family: sans-serif;
+            z-index: 100;
+            text-align: right;
+        }
+
+        .lang-switch-desktop a {
+            text-decoration: none;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .lang-switch-desktop a.active {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .lang-switch-desktop span {
+            color: #555;
+            margin: 0 2px;
+        }
+
+        .lang-switch a {
+            text-decoration: none;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .lang-switch a.active {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .lang-switch span {
+            color: #555;
+            margin: 0 2px;
+        }
+
+        .track {
+            padding: 1em;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            border: 0.2px solid #000;
+        }
+
+        .track-title {
+            font-family: sans-serif;
+            font-size: 14px;
+            margin-bottom: 0.6em;
+        }
+
+        .track-audio {
+            display: none;
+        }
+
+        .track-player {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+
+        .player-btn {
+            appearance: none;
+            -webkit-appearance: none;
+            border: 0.2px solid #000;
+            background: #fff;
+            color: #000;
+            padding: 0.32em 0.7em;
+            font-family: sans-serif;
+            font-size: 12px;
+            line-height: 1;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-right: 0.6em;
+        }
+
+        .player-btn:focus-visible {
+            outline: 1px dotted #000;
+            outline-offset: 1px;
+        }
+
+        .player-progress {
+            position: relative;
+            flex: 1;
+            min-width: 80px;
+            height: 16px;
+            border: 0.2px solid #000;
+            background: #fff;
+            cursor: pointer;
+            margin-right: 0.6em;
+            touch-action: none;
+        }
+
+        .player-progress-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 0%;
+            background: #000;
+        }
+
+        .player-time {
+            flex: 0 0 auto;
+            white-space: nowrap;
+            font-family: sans-serif;
+            font-size: 12px;
+            line-height: 1;
+            color: #000;
+        }
+
+        .music-note {
+            font-size: 13px;
+            font-family: sans-serif;
+            color: #555;
+            margin-top: 1em;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                margin: 0;
+            }
+
+            .content-wrapper {
+                margin: 3.5em 1em 0 1em;
+            }
+
+            .header {
+                display: flex;
+            }
+
+            .site-title-desktop {
+                display: none;
+            }
+
+            .lang-switch-desktop {
+                display: none;
+            }
+        }
+
+        @media print {
+            @page {
+                margin: 1cm;
+            }
+
+            body {
+                margin: 0;
+            }
+
+            .content-wrapper {
+                margin: 0;
+                filter: none;
+            }
+
+            .site-title-desktop,
+            .header {
+                display: none !important;
+            }
+
+            body::after {
+                display: none;
+            }
+
+            .track {
+                border: 0.2px solid #000;
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+        }
