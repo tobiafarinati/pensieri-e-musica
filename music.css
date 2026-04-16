@@ -17,6 +17,7 @@
         .album-cover {
             display: block;
             width: 50%;
+            max-width: 200px;
             aspect-ratio: 1 / 1;
             object-fit: cover;
             margin: 1.2em 0;
@@ -246,6 +247,11 @@
 
             .lang-switch-desktop {
                 display: none;
+            }
+
+            .album-cover {
+                width: 75%;
+                max-width: none;
             }
         }
 
