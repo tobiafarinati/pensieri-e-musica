@@ -10,8 +10,8 @@
 
     <svg style="position:absolute;width:0;height:0">
         <filter id="photocopy">
-            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise"/>
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G"/>
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5" xChannelSelector="R" yChannelSelector="G" />
         </filter>
     </svg>
 </head>
@@ -19,7 +19,8 @@
 <body>
 
     <div class="site-title-desktop">
-        <div class="nav-links"><a href="index.html" data-nav="thoughts">Pensieri</a><span>–</span><a href="music.html" data-nav="music" class="nav-active">Musica</a></div>
+        <div class="nav-links"><a href="index.html" data-nav="thoughts">Pensieri</a><span>–</span><a href="music.html"
+                data-nav="music" class="nav-active">Musica</a></div>
     </div>
 
     <div class="lang-switch-desktop">
@@ -27,14 +28,31 @@
     </div>
 
     <div class="header">
-        <div class="site-title"><div class="nav-links"><a href="index.html" data-nav="thoughts">Pensieri</a><span>–</span><a href="music.html" data-nav="music" class="nav-active">Musica</a></div></div>
+        <div class="site-title">
+            <div class="nav-links"><a href="index.html" data-nav="thoughts">Pensieri</a><span>–</span><a
+                    href="music.html" data-nav="music" class="nav-active">Musica</a></div>
+        </div>
         <div class="lang-switch">
             <a href="#" data-lang="it" class="active">it</a><span>—</span><a href="#" data-lang="en">eng</a>
         </div>
     </div>
 
     <div class="content-wrapper">
-        <div id="tracks"></div>
+        <div class="box">
+            <p class="title">Bozze</p>
+            <img src="bozze.png" alt="" class="album-cover">
+            <p class="album-intro">
+
+                Certe volte mi stupisco di non riuscire a fermare il tempo e sentirlo scivolare violentemente tra le
+                dita, dietro agli occhi, attraverso la bocca e tagliarmi le orecchie. Allora mi accumulo sul fondo buio
+                e quando tutto sembra farsi assente sento l’odore delle piante scaldate al sole, la sabbia che vibra
+                sotto l’estate e rilascia quell’aroma secco che penetra nelle narici. E così anche le strade vuote nel
+                mese di agosto e le cicale pazze, oppure i grilli leggeri dopo un temporale. È strano lo scostamento del
+                risveglio notturno e trovarsi strappati tra le proprie memorie.
+                <br><br>ps. siate pazienti con gli errori di questo album! ancora è incompleto.
+            </p>
+            <div id="tracks"></div>
+        </div>
         <p id="music-note" class="music-note" aria-live="polite"></p>
     </div>
 

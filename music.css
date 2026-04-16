@@ -14,6 +14,15 @@
             filter: url(#photocopy) contrast(1.2) brightness(1.05);
         }
 
+        .album-cover {
+            display: block;
+            width: 50%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            margin: 1.2em 0;
+            border: 0.2px solid #000;
+        }
+
         body::after {
             content: "";
             position: fixed;
@@ -120,11 +129,28 @@
             margin: 0 2px;
         }
 
-        .track {
-            padding: 1em;
+        .box {
+            padding: 0.1em 1em;
             margin-top: 1em;
             margin-bottom: 1em;
             border: 0.2px solid #000;
+        }
+
+        .track {
+            padding: 0.4em 0;
+            margin-top: 0.4em;
+            margin-bottom: 0.4em;
+        }
+
+        .title {
+            text-decoration: underline;
+        }
+
+        .album-intro {
+            text-align: justify;
+            hyphens: auto;
+            -webkit-hyphens: auto;
+            margin-bottom: 1em;
         }
 
         .track-title {
@@ -167,7 +193,7 @@
             position: relative;
             flex: 1;
             min-width: 80px;
-            height: 16px;
+            height: 4px;
             border: 0.2px solid #000;
             background: #fff;
             cursor: pointer;

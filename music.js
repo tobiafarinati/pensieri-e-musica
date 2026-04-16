@@ -146,7 +146,7 @@
 
                 fill.style.width = progress + "%";
                 button.textContent = audio.paused ? "play" : "pause";
-                time.textContent = formatTime(audio.currentTime) + " / " + formatTime(audio.duration);
+                time.textContent = formatTime(audio.currentTime);
             }
 
             function seekToEvent(audio, progressBar, event) {
