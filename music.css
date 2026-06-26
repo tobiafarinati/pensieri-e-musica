@@ -235,6 +235,15 @@
 
             .content-wrapper {
                 margin: 3.5em 1em 0 1em;
+                filter: none;
+            }
+
+            body::after {
+                opacity: 0.08;
+            }
+
+            .box.filter-visible {
+                filter: url(#photocopy) contrast(1.2) brightness(1.05);
             }
 
             .header {

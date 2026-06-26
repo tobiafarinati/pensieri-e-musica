@@ -88,6 +88,48 @@
 
         switchLang(getInitialLang());
 
+        function setupMobilePhotocopyFilter() {
+            var boxes = document.querySelectorAll('.box');
+            var mobileQuery = window.matchMedia('(max-width: 768px)');
+
+            function setAll(enabled) {
+                boxes.forEach(function(box) {
+                    box.classList.toggle('filter-visible', enabled);
+                });
+            }
+
+            if (!('IntersectionObserver' in window)) {
+                setAll(mobileQuery.matches);
+                return;
+            }
+
+            var observer = new IntersectionObserver(function(entries) {
+                entries.forEach(function(entry) {
+                    entry.target.classList.toggle('filter-visible', mobileQuery.matches && entry.isIntersecting);
+                });
+            }, {
+                rootMargin: '180px 0px'
+            });
+
+            boxes.forEach(function(box) {
+                observer.observe(box);
+            });
+
+            function handleModeChange() {
+                if (!mobileQuery.matches) {
+                    setAll(false);
+                }
+            }
+
+            if (mobileQuery.addEventListener) {
+                mobileQuery.addEventListener('change', handleModeChange);
+            } else if (mobileQuery.addListener) {
+                mobileQuery.addListener(handleModeChange);
+            }
+        }
+
+        setupMobilePhotocopyFilter();
+
         document.addEventListener('click', function(e) {
             var indice = document.querySelector('.indice');
             var toggle = document.querySelector('.index-toggle');
