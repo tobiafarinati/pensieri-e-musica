@@ -1,0 +1,381 @@
+        html {
+            background: #fff;
+            isolation: isolate;
+        }
+
+        body {
+            margin: 0;
+            background: #fff;
+            color: #000;
+        }
+
+        .content-wrapper {
+            margin: 0 25vw;
+            filter: url(#photocopy) contrast(1.2) brightness(1.05);
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.06;
+            mix-blend-mode: multiply;
+        }
+
+        .box {
+            padding: 0.1em 1em;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            border: 0.2px solid #000;
+            scroll-margin-top: 2em;
+        }
+
+        .title {
+            text-decoration: underline;
+        }
+
+        .bianco {
+            background: #fff;
+        }
+
+        .grigio {
+            background: #c0c0c0;
+        }
+
+        .giallo {
+            background: #ffffb0;
+        }
+
+        .verde {
+            background: #b0ffb0;
+        }
+
+        .viola {
+            background: #b0b0ff;
+        }
+
+        .azzurro {
+            background: #b0e0ff;
+        }
+
+        .footnote-ref {
+            font-size: 0.7em;
+            vertical-align: super;
+            text-decoration: none;
+            color: #000;
+        }
+
+        .footnotes {
+            font-size: 0.75em;
+            margin-top: 2em;
+            padding-top: 0;
+        }
+
+        .footnotes::before {
+            content: "";
+            display: block;
+            width: 20em;
+            border-top: 1px solid #000;
+            margin-bottom: -0.5lh;
+        }
+
+        .box p {
+            text-align: justify;
+            white-space: pre-line;
+            hyphens: auto;
+            -webkit-hyphens: auto;
+        }
+
+        .autore {
+            font-variant: small-caps;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8em 1em;
+            padding-top: max(0.8em, env(safe-area-inset-top));
+            background: #fff;
+            font-size: 14px;
+            font-family: sans-serif;
+            line-height: 1.15;
+            z-index: 100;
+        }
+
+        .index-toggle {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            color: #000;
+        }
+
+        .site-title-desktop {
+            position: fixed;
+            top: 1em;
+            left: 1em;
+            font-size: 14px;
+            font-family: sans-serif;
+            line-height: 1.15;
+            color: #000;
+            z-index: 100;
+        }
+
+        .nav-links {
+            display: inline;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .nav-links a.nav-active {
+            text-decoration: underline;
+        }
+
+        .nav-links span {
+            color: #555;
+            margin: 0 2px;
+        }
+
+        .lang-switch-desktop {
+            position: fixed;
+            top: 1em;
+            right: 1em;
+            font-size: 14px;
+            font-family: sans-serif;
+            z-index: 100;
+            text-align: right;
+        }
+
+        .lang-switch-desktop a {
+            text-decoration: none;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .lang-switch-desktop a.active {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .lang-switch-desktop span {
+            color: #555;
+            margin: 0 2px;
+        }
+
+        .indice-desktop {
+            margin-top: 1.5em;
+            margin-bottom: 1em;
+            font-size: 14px;
+            font-family: sans-serif;
+            line-height: 1.15;
+        }
+
+        .indice-desktop a {
+            display: block;
+            color: #000;
+            text-decoration: none;
+            margin: 0.3em 0;
+        }
+
+        .indice-desktop a:hover {
+            text-decoration: underline;
+        }
+
+        .site-title {
+            color: #000;
+        }
+
+        .indice {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 3.5em 1em 1em 1em;
+            white-space: nowrap;
+            z-index: 99;
+            text-align: left;
+            font-family: sans-serif;
+            font-size: 14px;
+            line-height: 1.15;
+        }
+
+        .indice.open {
+            display: block;
+        }
+
+        .lang-switch a {
+            text-decoration: none;
+            color: #000;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: sans-serif;
+        }
+
+        .lang-switch a.active {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .lang-switch span {
+            color: #555;
+            margin: 0 2px;
+        }
+
+        .indice a {
+            display: block;
+            color: #000;
+            text-decoration: none;
+            margin: 0.3em 0;
+        }
+
+        .indice a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                margin: 0;
+            }
+
+            .content-wrapper {
+                margin: 3.5em 1em 0 1em;
+            }
+
+            .box {
+                scroll-margin-top: 3.5em;
+            }
+
+            .box {
+                margin-left: 0;
+                margin-right: 0;
+            }
+
+            .header {
+                display: flex;
+            }
+
+            .site-title-desktop,
+            .lang-switch-desktop {
+                display: none;
+            }
+
+            .download-btn {
+                display: none;
+            }
+        }
+
+        .download-btn {
+            position: fixed;
+            bottom: 1em;
+            right: 1em;
+            font-size: 14px;
+            font-family: sans-serif;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: #000;
+            z-index: 100;
+        }
+
+        .download-btn:hover {
+            text-decoration: underline;
+        }
+
+        .lang-en {
+            display: none;
+        }
+
+        body.en .lang-en {
+            display: block;
+        }
+
+        body.en .lang-it {
+            display: none;
+        }
+
+        .translation-note {
+            display: none;
+            font-size: 11px;
+            font-family: sans-serif;
+            color: #000;
+            line-height: 1.3;
+            margin-top: 0.4em;
+            text-align: right;
+        }
+
+        body.en .translation-note {
+            display: block;
+        }
+
+        .lang-switch-desktop .translation-note {
+            max-width: calc(20vw - 2em);
+        }
+
+        .note-dropdown {
+            display: none;
+            position: fixed;
+            top: 2.5em;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 0.8em 1em;
+            z-index: 99;
+            font-size: 12px;
+            font-family: sans-serif;
+            color: #000;
+            line-height: 1.4;
+        }
+
+        .note-dropdown.open {
+            display: block;
+        }
+
+        @media print {
+            @page {
+                margin: 1cm;
+            }
+
+            body {
+                margin: 0;
+            }
+
+            .content-wrapper {
+                margin: 0;
+                filter: none;
+            }
+
+            .site-title-desktop,
+            .lang-switch-desktop,
+            .header,
+            .download-btn,
+            .indice-desktop {
+                display: none !important;
+            }
+
+            body::after {
+                display: none;
+            }
+
+            .box {
+                border: 0.2px solid #000;
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+        }
