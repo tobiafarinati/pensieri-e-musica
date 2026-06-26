@@ -270,10 +270,6 @@
                 .content-wrapper {
                     filter: contrast(1.2) brightness(1.05);
                 }
-
-                body::after {
-                    opacity: 0.08;
-                }
             }
 
             .box {
