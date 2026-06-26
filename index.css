@@ -268,7 +268,11 @@
 
             @supports (-webkit-touch-callout: none) {
                 .content-wrapper {
-                    filter: contrast(1.2) brightness(1.05);
+                    filter: none;
+                }
+
+                body::after {
+                    display: none;
                 }
             }
 
