@@ -257,6 +257,16 @@
                 margin: 3.5em 1em 0 1em;
             }
 
+            @supports (-webkit-touch-callout: none) {
+                .content-wrapper {
+                    filter: contrast(1.2) brightness(1.05);
+                }
+
+                body::after {
+                    opacity: 0.08;
+                }
+            }
+
             .box {
                 scroll-margin-top: 3.5em;
             }
