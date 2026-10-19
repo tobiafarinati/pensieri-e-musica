@@ -71,8 +71,8 @@
                 a.setAttribute('href', lang === 'en' ? 'music.html?lang=en' : 'music.html');
             });
 
-            var indexIt = ['Il volo', 'Il temporale', 'Noia, tristezza e tranquillità', 'Rovine', 'Tesi, capitolo ultimo', 'Pensiero ingenuo, l\'inutile'];
-            var indexEn = ['The flight', 'The storm', 'Boredom, sadness and tranquility', 'Ruins', 'Thesis, last chapter', 'Naive thought, the useless'];
+            var indexIt = ['Il risveglio', '“Che c’è?”', 'Il treno', 'Racconto sulla riva del mare', 'Il volo', 'Il temporale', 'Noia, tristezza e tranquillità', 'Rovine', 'Tesi, capitolo ultimo', 'Pensiero ingenuo, l\'inutile'];
+            var indexEn = ['The awakening', '“Che c’è?”', 'The train', 'Tale on the seashore', 'The flight', 'The storm', 'Boredom, sadness and tranquility', 'Ruins', 'Thesis, last chapter', 'Naive thought, the useless'];
             var items = lang === 'en' ? indexEn : indexIt;
             document.querySelectorAll('.indice-desktop a').forEach(function(a, i) { a.textContent = items[i]; });
             document.querySelectorAll('.indice a').forEach(function(a, i) { a.textContent = items[i]; });

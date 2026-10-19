@@ -50,6 +50,22 @@
             background: #b0e0ff;
         }
 
+        .rosa {
+            background: #ffd0f0;
+        }
+
+        .arancio {
+            background: #ffd8b0;
+        }
+
+        .ciano {
+            background: #b0fff0;
+        }
+
+        .rosso {
+            background: #ffc0c0;
+        }
+
         .footnote-ref {
             font-size: 0.7em;
             vertical-align: super;
@@ -251,6 +267,11 @@
                 margin-left: 0;
                 margin-right: 0;
                 filter: url(#photocopy) contrast(1.1) brightness(1.03);
+            }
+
+            .box.viola,
+            .box.azzurro {
+                filter: none;
             }
 
             .header {
